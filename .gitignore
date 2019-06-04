@@ -1,5 +1,6 @@
 /.idea
 /config/private_key.pem
 /node/node_modules
-
+certs/
 logs/
+deploy.sh
