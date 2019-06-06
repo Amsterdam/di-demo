@@ -38,7 +38,7 @@
     <script src="js/irma.js"></script>
     <script src="js/demo.js"></script>
   </head>
-  <body class="">
+  <body>
     <div id="page">
       <header>
         <a href="/">
@@ -116,7 +116,7 @@
         </ul>
 
         <div class="vote-bottom">
-          <button class="vote-button" onclick="stem(event)">Stemmen</button>
+          <button class="primary-button vote-button" onclick="stem(event)">Stemmen</button>
           <div class="vote-irma">met IRMA</div>
         </div>
       </form>
@@ -184,5 +184,32 @@
     </div>
 
     <div id="logoutButton"></div>
+
+    <div class="popup success" id="vote-success">
+      <button class="close" data-popup-close="close"></button>
+      <img src="new/result/success.svg" alt="">
+      <h4>Gestemd!</h4>
+
+      <p class="status">Bedankt voor uw stem.<br>Uw mening doet er toe.</p>
+      <button class="primary-button" data-popup-close="ok">Ga verder</button>
+    </div>
+
+    <div class="popup success" id="vote-error">
+      <button class="close" data-popup-close="close"></button>
+      <img src="new/result/error.svg" alt="">
+      <h4>Oeps…</h4>
+
+      <p class="status">Er is iets mis gegaan.</p>
+      <button class="primary-button" data-popup-close="ok">Probeer het opnieuw</button>
+    </div>
+
+    <div class="popup success" id="vote-already-voted">
+      <button class="close" data-popup-close="close"></button>
+      <img src="new/result/already-voted.svg" alt="">
+      <h4>U heeft al gestemd!</h4>
+
+      <p class="status">Helaas, je kunt voor dit project maar één keer stemmen.</p>
+      <button class="primary-button" data-popup-close="ok">Ga terug</button>
+    </div>
   </body>
 </html>
