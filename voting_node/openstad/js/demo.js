@@ -1,32 +1,30 @@
-const voteHost = "https://irma.amsterdam";
-const irmaServer = 'https://irma.amsterdam';
+let voteHost;
+// let irmaServer;
 
 console.log("OK");
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  const config = await getConfig();
+
+  console.log("config", config);
+
+  voteHost = config.node;
+  // irmaServer = config.node;
+
   const votingResults = document.querySelector(".voting-results");
   poll(votingResults);
-  voteSelect();
 });
 
 async function stem(event) {
   event.preventDefault();
+  event.stopPropagation();
 
   const voteInput = document.querySelector(".gardens input:checked");
   if (!voteInput) {
     console.log("No vote");
+    openPopup("vote-no-selection");
     return;
   }
-
-  const request = {
-    type: "disclosing",
-    content: [
-      {
-        label: "Uw emailadres",
-        attributes: ["pbdf.pbdf.email.email"]
-      }
-    ]
-  };
 
   try {
     const irmaResponse = await fetch(`${voteHost}/getsession`, {
@@ -37,11 +35,18 @@ async function stem(event) {
 
     const { sessionPtr, token } = session;
 
+    openPopup("vote-qr");
+
     const result = await irma.handleSession(sessionPtr, {
-      server: irmaServer,
+      method: "canvas",
+      element: "qr",
+      showConnectedIcon: true,
+      server: voteHost,
       token,
       language: "nl"
     });
+
+    dissmissPopup();
 
     console.log("IRMA result", result);
 
@@ -63,17 +68,17 @@ async function stem(event) {
 
     let message;
     if (voteResult.alreadyVoted) {
-      message = "U heeft al eerder gestemd!";
+      await openPopup("vote-already-voted");
     } else {
-      message = `U heeft gestemd voor ${voteResult.vote}`;
+      await openPopup("vote-success");
     }
-
-    document.querySelector(".status").textContent = message;
+    document.location = "/results.html";
 
     console.log("result", voteResult);
   } catch (e) {
-    console.log("Cancelled");
-    throw new Error(e);
+    console.error("Cancelled", e);
+    //await openPopup("vote-error");
+    document.location.reload();
   }
 }
 
@@ -103,32 +108,84 @@ async function poll(votingResults) {
         `--${item}`,
         `${total == 0 ? 0 : (100 * json.votes[item]) / total}px`
       );
-      document.querySelector(`.${item} .perc`).textContent = `${Math.round(
-        100 * (json.votes[item] || 0)
-       / total)}%`;
+      document.querySelector(`.${item} .perc`).textContent = `${
+        total == 0 ? 0 : Math.round((100 * (json.votes[item] || 0)) / total)
+      }%`;
     });
   }
 }
 
-function voteSelect() {
-  const items = document.querySelectorAll(".voting-form .gardens li");
-  if (!items) {
-    return;
-  }
+async function getConfig() {
+  const response = await fetch("/config", {
+    mode: "cors"
+  });
+  return await response.json();
+}
 
-  Array.from(items).forEach(item => {
-    item.addEventListener("click", selectItem);
+function openPopup(popupId) {
+  const popupElement = document.getElementById(popupId);
+  const scrollTop = document.scrollingElement.scrollTop;
+  document.body.classList.add("whitebox");
+  document.body.style.setProperty("--top", scrollTop);
+
+  popupElement.classList.add("visible");
+
+  document.body.addEventListener("focusin", event => {
+    if (!popupElement.contains(event.target)) {
+      document.scrollingElement.scrollTop = scrollTop;
+      const focusElement = popupElement.querySelector(
+        "a, button, input, textarea"
+      );
+      if (focusElement) {
+        focusElement.focus();
+      }
+    }
   });
 
-  function selectItem(event) {
-    const li = event.target.closest("li");
-    const selected = document.querySelector(".selected");
-    if (selected) {
-      selected.classList.remove("selected");
-    }
-    li.classList.add("selected");
+  const closeButtons = Array.from(
+    popupElement.querySelectorAll("[data-popup-close]")
+  );
 
-    const radio = li.querySelector(`input[type=radio]`);
-    radio.checked = true;
-  }
+  return new Promise(resolve => {
+    setTimeout(() => {
+      window.addEventListener("click", desktop);
+    }, 0);
+    window.addEventListener("keyup", escape);
+
+    closeButtons.forEach(element => {
+      element.addEventListener("click", action);
+    });
+
+    function desktop(event) {
+      if (!popupElement.contains(event.target)) {
+        dismiss("escape");
+      }
+    }
+    function escape(event) {
+      if (event.code === "Escape") {
+        dismiss("escape");
+      }
+    }
+
+    function action(event) {
+      dismiss(this.dataset.popupClose);
+    }
+
+    function dismiss(value) {
+      window.removeEventListener("click", desktop);
+      window.removeEventListener("keyup", escape);
+      closeButtons.forEach(element => {
+        element.removeEventListener("click", action);
+      });
+
+      document.body.classList.remove("whitebox");
+      popupElement.classList.remove("visible");
+      resolve(value);
+    }
+  });
+}
+
+function dissmissPopup() {
+  const event = new KeyboardEvent("keyup", { code: "Escape" });
+  window.dispatchEvent(event);
 }
