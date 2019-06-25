@@ -1,0 +1,5 @@
+{
+    "node": "https://irma.amsterdam",
+    "irma": "http://irma:8088",
+    "port": 8000
+}
