@@ -1,31 +1,15 @@
-let dev;
 let voteHost;
-let irmaServer;
+// let irmaServer;
 
 console.log("OK");
 
-const names = {
-  community: "Gemeenschapstuin",
-  tech: "Slimme tuin",
-  zen: "Zentuin"
-};
-
 document.addEventListener("DOMContentLoaded", async () => {
-  ({ dev } = await setEnv());
+  const config = await getConfig();
 
-  voteHost = "https://irma.amsterdam";
-  irmaServer = "https://irma.amsterdam";
+  console.log("config", config);
 
-  // LOCAL voteHost = "http://44e1cb66.eu.ngrok.io";
-  // LOCAL irmaServer = 'http://874d4b8c.eu.ngrok.io';
-
-  // DEBUG:
-  // irmaServer = "https://acc.fixxx10.amsterdam.nl";
-
-  if (dev === 1) {
-    voteHost = "http://localhost";
-    irmaServer = "https://irma.amsterdam";
-  }
+  voteHost = config.node;
+  // irmaServer = config.node;
 
   const votingResults = document.querySelector(".voting-results");
   poll(votingResults);
@@ -42,16 +26,6 @@ async function stem(event) {
     return;
   }
 
-  const request = {
-    type: "disclosing",
-    content: [
-      {
-        label: "Uw emailadres",
-        attributes: ["pbdf.pbdf.email.email"]
-      }
-    ]
-  };
-
   try {
     const irmaResponse = await fetch(`${voteHost}/getsession`, {
       mode: "cors"
@@ -61,11 +35,18 @@ async function stem(event) {
 
     const { sessionPtr, token } = session;
 
+    openPopup("vote-qr");
+
     const result = await irma.handleSession(sessionPtr, {
-      server: irmaServer,
+      method: "canvas",
+      element: "qr",
+      showConnectedIcon: true,
+      server: voteHost,
       token,
       language: "nl"
     });
+
+    dissmissPopup();
 
     console.log("IRMA result", result);
 
@@ -127,17 +108,15 @@ async function poll(votingResults) {
         `--${item}`,
         `${total == 0 ? 0 : (100 * json.votes[item]) / total}px`
       );
-      document.querySelector(`.${item} .perc`).textContent = `${total == 0 ? 0 : Math.round(
-        (100 * (json.votes[item] || 0)) / total
-      )}%`;
+      document.querySelector(`.${item} .perc`).textContent = `${
+        total == 0 ? 0 : Math.round((100 * (json.votes[item] || 0)) / total)
+      }%`;
     });
   }
 }
 
-async function setEnv() {
-  let voteServerEnvUrl = new URL(`${document.location.href}`);
-  voteServerEnvUrl.pathname = "/env";
-  const response = await fetch(voteServerEnvUrl, {
+async function getConfig() {
+  const response = await fetch("/config", {
     mode: "cors"
   });
   return await response.json();
@@ -204,4 +183,9 @@ function openPopup(popupId) {
       resolve(value);
     }
   });
+}
+
+function dissmissPopup() {
+  const event = new KeyboardEvent("keyup", { code: "Escape" });
+  window.dispatchEvent(event);
 }

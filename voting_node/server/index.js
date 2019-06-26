@@ -3,56 +3,47 @@ const irma = require("@privacybydesign/irmajs");
 const app = express();
 const cors = require("cors");
 const storage = require("node-persist");
+const util = require("util");
 const fs = require("fs");
-const skey = fs.readFileSync("./config/private_key.pem", "utf-8");
+const uuidv5 = require("uuid/v5");
+const appNamespaceUuid = "06c5a013-4e71-439a-b8da-65e35b6419f0";
 
-const port = 8000;
+let skey;
+let isDev;
+let config;
 
 init();
 
-const dev = process.env.development;
-
-let irmaServer = 'http://irma:8088';
-
-// LOCAL let irmaServer = 'http://localhost:8088';
-
-if(dev === 1) {
-  irmaServer = 'https://irma.amsterdam';
-}
-
-// DEBUG:
-// const irmaServer = "https://acc.fixxx10.amsterdam.nl";
-
-
-const request = {
-  type: "disclosing",
-  content: [
-    {
-      label: "Uw emailadres",
-      attributes: ["pbdf.pbdf.email.email"]
-    }
-  ]
-};
-
 async function init() {
   try {
+    skey = await util.promisify(fs.readFile)("config/private_key.pem", "utf-8");
+
+    isDev = process.env.STAGE === "dev";
+
+    const configFileName = isDev
+      ? "config/config-dev.json"
+      : "config/config-prod.json";
+    const json = await util.promisify(fs.readFile)(configFileName, "utf-8");
+    config = JSON.parse(json);
+
+    console.log("config", config);
+
     await storage.init();
 
     app.use(express.json());
 
     app.get("/hello", (req, res) => res.send("Hello World!"));
-    // app.get("/", (req, res) => res.send("REST API Server"));
 
     app.options("/vote", cors());
     app.post("/vote", cors(), vote);
     app.get("/stats", cors(), stats);
     app.get("/getsession", cors(), irmaSession);
-    app.get("/env", cors(), getEnv)
+    app.get("/config", cors(), getConfig);
 
     app.use(express.static("../openstad"));
 
-    app.listen(port, () =>
-      console.log(`Voting app listening on port ${port}.`)
+    app.listen(config.port, () =>
+      console.log(`Voting app listening on port ${config.port}.`)
     );
   } catch (e) {
     error(e);
@@ -62,9 +53,18 @@ async function init() {
 async function irmaSession(req, res) {
   const authmethod = "publickey";
   const requestorname = "openstad_voting_pk";
+  const request = {
+    type: "disclosing",
+    content: [
+      {
+        label: "Uw MyIRMA gebruikersnaam",
+        attributes: ["pbdf.pbdf.mijnirma.email"]
+      }
+    ]
+  };
 
   console.log("irma.startSession", {
-    irmaServer,
+    url: config.irma,
     request: JSON.stringify(request),
     authmethod,
     requestorname
@@ -72,7 +72,7 @@ async function irmaSession(req, res) {
 
   try {
     const session = await irma.startSession(
-      irmaServer,
+      config.irma,
       request,
       authmethod,
       skey,
@@ -86,14 +86,14 @@ async function irmaSession(req, res) {
 
 async function vote(req, res) {
   try {
-    const alreadyVoted = await storage.getItem(req.body.email);
+    const emailHashed = uuidv5(req.body.email, appNamespaceUuid);
 
-    console.log(req.body.email, "alreadyVoted", alreadyVoted);
+    const alreadyVoted = await storage.getItem(emailHashed);
 
     if (!alreadyVoted) {
-      storage.setItem(req.body.email, true);
+      storage.setItem(emailHashed, true);
 
-      console.log("Voted for", req.body.vote);
+      console.log("Voted");
 
       let currentVote = await storage.getItem(req.body.vote);
 
@@ -111,6 +111,8 @@ async function vote(req, res) {
        *
        *******************************************/
       storage.setItem(req.body.vote, currentVote);
+    } else {
+      console.log("Already voted");
     }
 
     res.json({ alreadyVoted, vote: req.body.vote });
@@ -124,6 +126,7 @@ async function stats(req, res) {
   const params = new URLSearchParams(search);
   const items = params.get("items").split(",");
   const votesPromises = items.map(item => storage.getItem(item));
+
   try {
     const votesArray = await Promise.all(votesPromises);
     const votes = items.reduce((acc, item, i) => {
@@ -136,8 +139,8 @@ async function stats(req, res) {
   }
 }
 
-async function getEnv(req, res) {
-  res.json({dev})
+async function getConfig(req, res) {
+  res.json(config);
 }
 
 function error(e, res) {
