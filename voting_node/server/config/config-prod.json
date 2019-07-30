@@ -1,5 +1,5 @@
 {
     "node": "https://irma.amsterdam",
-    "irma": "http://irma:8088",
+    "irma": "https://acc.fixxx10.amsterdam.nl",
     "port": 8000
 }
