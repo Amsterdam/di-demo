@@ -3,6 +3,7 @@ const irma = require("@privacybydesign/irmajs");
 const app = express();
 const cors = require("cors");
 const util = require("util");
+const proxy = require("express-http-proxy");
 const fs = require("fs");
 const uuidv5 = require("uuid/v5");
 const pgp = require("pg-promise")();
@@ -38,6 +39,12 @@ async function init() {
     app.get("/stats", cors(), stats);
     app.get("/getsession", cors(), irmaSession);
     app.get("/config", cors(), getConfig);
+
+    // Forward to IRMA
+    app.use("/statusevents", proxy(`${config.irma}/statusevents`));
+    app.use("/status", proxy(`${config.irma}/status`));
+    app.use("/result", proxy(`${config.irma}/result`));
+    app.use("/irma", proxy(`${config.irma}/irma`));
 
     if (config.docroot) {
       app.use(express.static(config.docroot));

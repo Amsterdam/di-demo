@@ -34,7 +34,7 @@ async function vote(event) {
   }
 
   try {
-    const identifier = await irmaVote.irmaSession(config.irma, "qr", irmaPopup);
+    const identifier = await irmaVote.irmaSession(config.nodeUrl, "qr", irmaPopup);
 
     dissmissPopup();
 

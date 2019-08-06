@@ -70,6 +70,10 @@ const irmaVote = {
 
     const { sessionPtr, token } = session;
 
+    sessionPtr.u = sessionPtr.u.replace(config.irma, config.nodeUrl);
+
+    console.log("session", { sessionPtr, token });
+
     const sessionOptions = {
       method: "canvas",
       element,
@@ -84,6 +88,12 @@ const irmaVote = {
     } else {
       popupCallback();
     }
+
+    console.log(
+      "irma.handleSession",
+      sessionPtr,
+      JSON.stringify(sessionOptions)
+    );
 
     const result = await irma.handleSession(sessionPtr, sessionOptions);
 
