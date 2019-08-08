@@ -41,10 +41,13 @@ async function init() {
     app.get("/config", cors(), getConfig);
 
     // Forward to IRMA
-    app.use("/statusevents", proxy(`${config.irma}/statusevents`));
-    app.use("/status", proxy(`${config.irma}/status`));
-    app.use("/result", proxy(`${config.irma}/result`));
-    app.use("/irma", proxy(`${config.irma}/irma`));
+    app.use(
+      "/statusevents",
+      proxy(`${config.irma}`, prefixUrl("statusevents"))
+    );
+    app.use("/status", proxy(`${config.irma}`, prefixUrl("status")));
+    app.use("/result", proxy(`${config.irma}`, prefixUrl("result")));
+    app.use("/irma", proxy(`${config.irma}`, prefixUrl("irma")));
 
     if (config.docroot) {
       app.use(express.static(config.docroot));
@@ -58,6 +61,12 @@ async function init() {
   } catch (e) {
     error(e);
   }
+}
+
+function prefixUrl(prefix) {
+  return {
+    proxyReqPathResolver: req => `/${prefix}${req.url}`
+  };
 }
 
 async function irmaSession(req, res) {
