@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { BackDrop } from '@datapunt/asc-ui';
+import { BackDrop, Heading } from '@datapunt/asc-ui';
 import styled from '@datapunt/asc-core';
 import { PageWrapper } from '../../AppStyle';
 import { createIrmaSession } from '../../services/di';
@@ -9,6 +9,39 @@ import { ButtonStyleProps } from '../../shared/components/Button/ButtonStyle';
 import Button from '../../shared/components/Button/Button';
 import MijnStadInfo from './MijnStadInfo';
 import { scrollTop } from '../../services/layout';
+
+interface Props {
+  imageSrc: string;
+  title: string;
+  text: string;
+  href: string;
+  className: string;
+}
+
+export const Article: React.FC<Props> = ({
+  imageSrc,
+  title,
+  text,
+  href,
+  className,
+}) => {
+  return (
+    <article className={className}>
+      <a href={href}>
+        <img src={imageSrc} alt=""></img>
+        <Heading forwardedAs="h2">{title}</Heading>
+        <div>{text}</div>
+      </a>
+    </article>
+  );
+};
+
+const StyledArticle = styled(Article)`
+  a {
+    color: black;
+    text-decoration: none;
+  }
+`;
 
 //
 // === Amsterdam ===
@@ -116,25 +149,39 @@ const MijnStadPage: React.FC = () => {
 
   return (
     <>
+      <StyledArticle
+        imageSrc=""
+        title="Leeftijd aantonen"
+        text="Bewijs dat u ouder bent dan 18 jaar zonder uw geboortedatum prijs te geven"
+        href="/"
+      />
+
+      <StyledArticle
+        imageSrc=""
+        title="Ideeen voor uw buurt"
+        text="Bewijs dat u ouder bent dan 18 jaar zonder uw geboortedatum prijs te geven"
+        href="/"
+      />
+
       {authorizing && (
         <QRModal onClose={() => setAuthorizing(false)} Info={MijnStadInfo} />
       )}
       {authorizing && <BackDrop onClick={() => {}} hideOverFlow={false} />}
       <PageContainer>
-        <link
+        {/* <link
           href="https://fonts.googleapis.com/css?family=Rambla&display=swap"
           rel="stylesheet"
-        />
+        /> */}
         <StyledPageWrapper>
           {!authorized && (
             <>
-              <img
+              {/* <img
                 alt="Mijn Haarlem"
                 src={`/assets/theme/${theme}/mijnstad.png`}
                 width="1400"
                 height="1926"
                 decoding="async"
-              />
+              /> */}
               <Button onClick={login} {...loginButtonPosition} />
             </>
           )}
