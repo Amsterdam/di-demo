@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { BackDrop, Heading } from '@datapunt/asc-ui';
+import { BackDrop, Heading, Paragraph } from '@datapunt/asc-ui';
 import styled from '@datapunt/asc-core';
 import { PageWrapper } from '../../AppStyle';
 import { createIrmaSession } from '../../services/di';
@@ -29,7 +29,7 @@ export const Article: React.FC<Props> = ({
     <article className={className}>
       <a href={href}>
         <img src={imageSrc} alt=""></img>
-        <Heading forwardedAs="h2">{title}</Heading>
+        <Heading forwardedAs="h3">{title}</Heading>
         <div>{text}</div>
       </a>
     </article>
@@ -149,6 +149,23 @@ const MijnStadPage: React.FC = () => {
 
   return (
     <>
+      <Heading>Probeer IRMA uit</Heading>
+
+      <Paragraph strong>
+        IRMA is een app waarmee je overal kunt aantonen wie u bent. IRMA biedt
+        een nieuwe manier van inloggen anders dan u kent van misschien DigiD.
+      </Paragraph>
+
+      <Paragraph strong>
+        Binnenkort kunt u IRMA gebruiken in Amsterdam. Waarom IRMA?
+      </Paragraph>
+
+      <Paragraph strong>
+        Ervaar nu vast wat u met IRMA kunt via verschillende demo's.
+      </Paragraph>
+
+      <Heading forwardedAs="h2">Probeer IRMA uit</Heading>
+
       <StyledArticle
         imageSrc=""
         title="Leeftijd aantonen"
@@ -158,8 +175,8 @@ const MijnStadPage: React.FC = () => {
 
       <StyledArticle
         imageSrc=""
-        title="Ideeen voor uw buurt"
-        text="Bewijs dat u ouder bent dan 18 jaar zonder uw geboortedatum prijs te geven"
+        title="Ideeën voor uw buurt"
+        text="Bewijs dat u in een bepaalde Amsterdamse wijk woont en dat u ouder bent dan 18 jaar"
         href="/"
       />
 
