@@ -134,12 +134,16 @@ const MijnStadPage: React.FC = () => {
 
       <Heading forwardedAs="h2">Probeer IRMA uit</Heading>
 
-      <Article imageSrc="" title="Leeftijd aantonen" href="/">
+      <Article imageSrc="/assets/demo_1.png" title="Leeftijd aantonen" href="/">
         Bewijs dat u ouder bent dan 18 jaar zonder uw geboortedatum prijs te
         geven.
       </Article>
 
-      <Article imageSrc="" title="Ideeën voor uw buurt" href="/">
+      <Article
+        imageSrc="/assets/demo_2.png"
+        title="Ideeën voor uw buurt"
+        href="/"
+      >
         Bewijs dat u in een bepaalde Amsterdamse wijk woont en dat u ouder bent
         dan 18 jaar.
       </Article>

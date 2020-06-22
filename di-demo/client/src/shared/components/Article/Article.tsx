@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Heading, themeColor } from '@datapunt/asc-ui';
-import styled from '@datapunt/asc-core';
+import { Heading } from '@datapunt/asc-ui';
 
 export interface Props {
   imageSrc: string;
