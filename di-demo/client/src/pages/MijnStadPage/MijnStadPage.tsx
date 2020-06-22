@@ -6,42 +6,10 @@ import { PageWrapper } from '../../AppStyle';
 import { createIrmaSession } from '../../services/di';
 import { QRModal } from '../../shared/components/Modal/QRModal';
 import { ButtonStyleProps } from '../../shared/components/Button/ButtonStyle';
+import Article from '../../shared/components/Article';
 import Button from '../../shared/components/Button/Button';
 import MijnStadInfo from './MijnStadInfo';
 import { scrollTop } from '../../services/layout';
-
-interface Props {
-  imageSrc: string;
-  title: string;
-  text: string;
-  href: string;
-  className: string;
-}
-
-export const Article: React.FC<Props> = ({
-  imageSrc,
-  title,
-  children,
-  href,
-  className,
-}) => {
-  return (
-    <article className={className}>
-      <Link to={href}>
-        <img src={imageSrc} alt=""></img>
-        <Heading forwardedAs="h3">{title}</Heading>
-        <div>{children}</div>
-      </Link>
-    </article>
-  );
-};
-
-const StyledArticle = styled(Article)`
-  a {
-    color: black;
-    text-decoration: none;
-  }
-`;
 
 //
 // === Amsterdam ===
@@ -166,15 +134,15 @@ const MijnStadPage: React.FC = () => {
 
       <Heading forwardedAs="h2">Probeer IRMA uit</Heading>
 
-      <StyledArticle imageSrc="" title="Leeftijd aantonen" href="/">
+      <Article imageSrc="" title="Leeftijd aantonen" href="/">
         Bewijs dat u ouder bent dan 18 jaar zonder uw geboortedatum prijs te
         geven.
-      </StyledArticle>
+      </Article>
 
-      <StyledArticle imageSrc="" title="Ideeën voor uw buurt" href="/">
+      <Article imageSrc="" title="Ideeën voor uw buurt" href="/">
         Bewijs dat u in een bepaalde Amsterdamse wijk woont en dat u ouder bent
         dan 18 jaar.
-      </StyledArticle>
+      </Article>
 
       {authorizing && (
         <QRModal onClose={() => setAuthorizing(false)} Info={MijnStadInfo} />
