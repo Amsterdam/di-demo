@@ -29,11 +29,4 @@ const Article: React.FC<Props> = ({
   );
 };
 
-const StyledArticle = styled(Article)`
-  a {
-    color: ${themeColor('tint', 'level7')};
-    text-decoration: none;
-  }
-`;
-
-export default StyledArticle;
+export default Article;
