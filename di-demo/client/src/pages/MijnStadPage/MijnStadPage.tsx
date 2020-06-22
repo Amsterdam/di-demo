@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams, Link } from 'react-router-dom';
 import { BackDrop, Heading, Paragraph } from '@datapunt/asc-ui';
 import styled from '@datapunt/asc-core';
 import { PageWrapper } from '../../AppStyle';
@@ -21,17 +21,17 @@ interface Props {
 export const Article: React.FC<Props> = ({
   imageSrc,
   title,
-  text,
+  children,
   href,
   className,
 }) => {
   return (
     <article className={className}>
-      <a href={href}>
+      <Link to={href}>
         <img src={imageSrc} alt=""></img>
         <Heading forwardedAs="h3">{title}</Heading>
-        <div>{text}</div>
-      </a>
+        <div>{children}</div>
+      </Link>
     </article>
   );
 };
@@ -166,19 +166,15 @@ const MijnStadPage: React.FC = () => {
 
       <Heading forwardedAs="h2">Probeer IRMA uit</Heading>
 
-      <StyledArticle
-        imageSrc=""
-        title="Leeftijd aantonen"
-        text="Bewijs dat u ouder bent dan 18 jaar zonder uw geboortedatum prijs te geven"
-        href="/"
-      />
+      <StyledArticle imageSrc="" title="Leeftijd aantonen" href="/">
+        Bewijs dat u ouder bent dan 18 jaar zonder uw geboortedatum prijs te
+        geven.
+      </StyledArticle>
 
-      <StyledArticle
-        imageSrc=""
-        title="Ideeën voor uw buurt"
-        text="Bewijs dat u in een bepaalde Amsterdamse wijk woont en dat u ouder bent dan 18 jaar"
-        href="/"
-      />
+      <StyledArticle imageSrc="" title="Ideeën voor uw buurt" href="/">
+        Bewijs dat u in een bepaalde Amsterdamse wijk woont en dat u ouder bent
+        dan 18 jaar.
+      </StyledArticle>
 
       {authorizing && (
         <QRModal onClose={() => setAuthorizing(false)} Info={MijnStadInfo} />
