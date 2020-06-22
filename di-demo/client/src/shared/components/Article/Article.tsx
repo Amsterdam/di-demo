@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Heading, themeColor } from '@datapunt/asc-ui';
 import styled from '@datapunt/asc-core';
 
-interface Props {
+export interface Props {
   imageSrc: string;
   title: string;
   text: string;
