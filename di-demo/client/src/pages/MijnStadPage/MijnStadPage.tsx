@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams, Link } from 'react-router-dom';
-import { BackDrop, Heading, Paragraph } from '@datapunt/asc-ui';
+import { BackDrop, Heading, Paragraph, Accordion } from '@datapunt/asc-ui';
 import styled from '@datapunt/asc-core';
 import { PageWrapper } from '../../AppStyle';
 import { createIrmaSession } from '../../services/di';
@@ -13,9 +13,11 @@ import { scrollTop } from '../../services/layout';
 
 const StyledImage = styled.img`
   width: 100%;
+  margin-bottom: 12px;
 `;
 
 const StyledH1 = styled(Heading)`
+  margin-top: 20px;
   margin-bottom: 30px;
 `;
 
@@ -145,16 +147,20 @@ const MijnStadPage: React.FC = () => {
         Ervaar nu vast wat u met IRMA kunt via verschillende demo's.
       </Paragraph>
 
-      <StyledH2 $as="h2">Aan de slag met IRMA</StyledH2>
+      <StyledH2>Aan de slag met IRMA</StyledH2>
 
-      <Article imageSrc="/assets/demo_1.png" title="Leeftijd aantonen" href="/">
+      <Article
+        imageSrc="/assets/demo_1.png"
+        title="Demo 1: Leeftijd aantonen"
+        href="/"
+      >
         Bewijs dat u ouder bent dan 18 jaar zonder uw geboortedatum prijs te
         geven.
       </Article>
 
       <Article
         imageSrc="/assets/demo_2.png"
-        title="Ideeën voor uw buurt"
+        title="Demo 2: Ideeën voor uw buurt"
         href="/"
       >
         Bewijs dat u in een bepaalde Amsterdamse wijk woont en dat u ouder bent
