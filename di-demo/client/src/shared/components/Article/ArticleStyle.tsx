@@ -9,7 +9,10 @@ const ArticleStyle = styled(Article)`
 
     img {
       width: 100%;
-      margin-top: ${themeSpacing(8)};
+    }
+
+    div {
+      margin-bottom: ${themeSpacing(8)};
     }
   }
 `;

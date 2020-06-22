@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from '@datapunt/asc-core';
 import { Link } from 'react-router-dom';
 import { Heading } from '@datapunt/asc-ui';
 
@@ -10,6 +11,10 @@ export interface Props {
   className: string;
 }
 
+const StyledH3 = styled(Heading)`
+  margin-bottom: 8px;
+`;
+
 const Article: React.FC<Props> = ({
   imageSrc,
   title,
@@ -18,13 +23,13 @@ const Article: React.FC<Props> = ({
   className,
 }) => {
   return (
-    <div className={className}>
+    <section className={className}>
       <Link to={href}>
         <img src={imageSrc} alt=""></img>
-        <Heading forwardedAs="h3">{title}</Heading>
+        <StyledH3 $as="h3">{title}</StyledH3>
         <div>{children}</div>
       </Link>
-    </div>
+    </section>
   );
 };
 

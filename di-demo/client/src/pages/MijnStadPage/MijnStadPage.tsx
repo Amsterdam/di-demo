@@ -11,7 +11,18 @@ import Button from '../../shared/components/Button/Button';
 import MijnStadInfo from './MijnStadInfo';
 import { scrollTop } from '../../services/layout';
 
-//
+const StyledImage = styled.img`
+  width: 100%;
+`;
+
+const StyledH1 = styled(Heading)`
+  margin-bottom: 30px;
+`;
+
+const StyledH2 = styled(Heading)`
+  margin-bottom: 12px;
+`;
+
 // === Amsterdam ===
 //
 // const loginButtonPosition: ButtonStyleProps = {
@@ -117,7 +128,9 @@ const MijnStadPage: React.FC = () => {
 
   return (
     <>
-      <Heading>Probeer IRMA uit</Heading>
+      <StyledH1>Probeer IRMA uit</StyledH1>
+
+      <StyledImage src="/assets/home.png"></StyledImage>
 
       <Paragraph strong>
         IRMA is een app waarmee je overal kunt aantonen wie u bent. IRMA biedt
@@ -132,7 +145,7 @@ const MijnStadPage: React.FC = () => {
         Ervaar nu vast wat u met IRMA kunt via verschillende demo's.
       </Paragraph>
 
-      <Heading forwardedAs="h2">Probeer IRMA uit</Heading>
+      <StyledH2 $as="h2">Aan de slag met IRMA</StyledH2>
 
       <Article imageSrc="/assets/demo_1.png" title="Leeftijd aantonen" href="/">
         Bewijs dat u ouder bent dan 18 jaar zonder uw geboortedatum prijs te
