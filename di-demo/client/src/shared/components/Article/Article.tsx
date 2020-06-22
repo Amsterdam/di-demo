@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Heading } from '@datapunt/asc-ui';
+import { Heading, themeColor } from '@datapunt/asc-ui';
 import styled from '@datapunt/asc-core';
 
 interface Props {
@@ -31,7 +31,7 @@ const Article: React.FC<Props> = ({
 
 const StyledArticle = styled(Article)`
   a {
-    color: black;
+    color: ${themeColor('tint', 'level7')};
     text-decoration: none;
   }
 `;
