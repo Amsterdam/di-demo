@@ -17,8 +17,8 @@ const StyledImage = styled.img`
 `;
 
 const StyledH1 = styled(Heading)`
-  margin-top: 20px;
-  margin-bottom: 30px;
+  margin-top: 16px;
+  margin-bottom: 24px;
 `;
 
 const StyledH2 = styled(Heading)`
