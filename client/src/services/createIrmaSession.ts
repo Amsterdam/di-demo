@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as irma from '@privacybydesign/irmajs';
+import isMobile from '@services/isMobile';
 
 // Types
 export interface IIrmaServerConfig {
@@ -25,9 +26,9 @@ export const getConfig = async (): Promise<IIrmaServerConfig> => {
     return config;
 };
 
-export const isMobile = (): boolean => {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-};
+// export const isMobile = (): boolean => {
+    // return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+// };
 
 // Note: To use the demo credentials on non-production environments add ?demo=true to the URL
 const createIrmaSession = async (

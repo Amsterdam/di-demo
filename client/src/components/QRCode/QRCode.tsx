@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import ReactMarkDown from 'react-markdown';
 import { Button, Modal, themeSpacing, themeColor } from '@datapunt/asc-ui';
 import { Close } from '@datapunt/asc-assets';
-import { isMobile } from '@services/createIrmaSession';
+import isMobile from '@services/isMobile';
 import content from '@services/content';
 import { OL } from '@components/LocalAsc/LocalAsc';
 

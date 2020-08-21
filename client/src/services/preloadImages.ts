@@ -1,4 +1,4 @@
-import { isMobile } from './createIrmaSession';
+import isMobile from '@services/isMobile';
 
 // This function preloads the responsive images that are used in the demo
 // srcArray contains only the filename without the -940 or -290 postfixes. e.g. 'ouder-dan'
