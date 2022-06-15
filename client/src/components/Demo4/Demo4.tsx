@@ -37,8 +37,9 @@ const Demo4: React.FC<IProps> = () => {
     function replaceVars(str: string, p1: keyof IState['irmaAttributes']) {
         if (!OPTIONAL_IRMA_ATTRIBUTES.includes(p1)) {
             return state.irmaAttributes[p1] || '-';
+        } else {
+            return state.irmaAttributes[p1] || '';
         }
-        return '';
     }
 
     const validateForm = () => {
