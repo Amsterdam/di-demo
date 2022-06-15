@@ -1,6 +1,9 @@
 import React, { useContext, useState } from 'react';
+import { safeSessionStorage } from 'safe-storage';
 import contentNL from './content-nl';
 import contentEN from './content-en';
+
+const STORAGE_KEY = 'irma-demo-lang';
 
 export enum Language {
     NL = 'nl',
@@ -16,8 +19,8 @@ type ContentContextType = {
 };
 
 const defaultContentContext = {
-    language: Language.NL,
-    content: contentNL,
+    language: safeSessionStorage.getItem(STORAGE_KEY) ?? Language.NL,
+    content: safeSessionStorage.getItem(STORAGE_KEY) === Language.EN ? contentEN : contentNL,
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     switchLanguage: (l: Language) => {}
 };
@@ -25,14 +28,17 @@ const defaultContentContext = {
 export const ContentContext = React.createContext<ContentContextType>(defaultContentContext);
 
 export const ContentProvider: React.FC = ({ children }) => {
-    const [language, setLanguage] = useState<Language>(Language.NL);
+    const [language, setLanguage] = useState<Language>(safeSessionStorage.getItem(STORAGE_KEY) ?? Language.NL);
 
     return (
         <ContentContext.Provider
             value={{
                 language,
                 content: language === Language.NL ? contentNL : contentEN,
-                switchLanguage: setLanguage
+                switchLanguage: l => {
+                    safeSessionStorage.setItem(STORAGE_KEY, l);
+                    setLanguage(l);
+                }
             }}
         >
             {children}
@@ -52,7 +58,7 @@ export const useSwichLanguage = (): ((language: Language) => void) => {
     return switchLanguage;
 };
 
-export const useGetCurrentLanguage = (): Language => {
+export const useCurrentLanguage = (): Language => {
     const { language } = useContext(ContentContext);
 
     return language;

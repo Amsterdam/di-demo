@@ -350,7 +350,15 @@ const Demo4: React.FC<IProps> = () => {
                     </EmphasisBlock>
                     <ContentBlock>
                         <section>
-                            <ReactMarkDown source={content.callToAction} />
+                            <ReactMarkDown
+                                source={content.callToAction}
+                                renderers={{
+                                    heading: AscLocal.H2,
+                                    paragraph: AscLocal.Paragraph,
+                                    list: AscLocal.UL,
+                                    link: AscLocal.MarkDownToLink
+                                }}
+                            />
                         </section>
                     </ContentBlock>
                 </>

@@ -7,7 +7,7 @@ import * as AscLocal from '@components/LocalAsc/LocalAsc';
 import { Alert as AlertIcon } from '@amsterdam/asc-assets';
 import Footer from '@components/Footer/Footer';
 import { SkipLink } from '@components/SkipLink/SkipLink';
-import { Language, useContent, useGetCurrentLanguage, useSwichLanguage } from '@services/ContentProvider';
+import { Language, useContent, useCurrentLanguage, useSwichLanguage } from '@services/ContentProvider';
 
 interface IProps {
     className?: string;
@@ -37,7 +37,7 @@ const isIE = !!document.documentMode;
 
 const PageTemplate: React.FC<IProps> = ({ children, className, hideTitle }) => {
     const content = useContent();
-    const language = useGetCurrentLanguage();
+    const language = useCurrentLanguage();
     const switchLanguage = useSwichLanguage();
     const location = useLocation();
     const title = hideTitle ? undefined : <div>{content.header.title}</div>;

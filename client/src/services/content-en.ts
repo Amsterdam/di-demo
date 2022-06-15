@@ -1,4 +1,5 @@
 /* eslint-disable no-irregular-whitespace */
+// Content values can be changed freely, but don't change the data structure of this file.
 
 const content = {
     header: {
@@ -26,6 +27,7 @@ Various demos are already available that you can use to find out how IRMA works.
 Download the IRMA app for iOS or Android:  \n
 [![App Store](/assets/download-app-store.svg "Download IRMA from the App Store")](https://apps.apple.com/nl/app/irma-authenticatie/id1294092994)
 [![Play Store](/assets/download-play-store.svg "Download IRMA from Play Store")](https://play.google.com/store/apps/details?id=org.irmacard.cardemu)
+
 Would you like to know more about IRMA?
 [Go to the IRMA website](https://irma.app/?lang=nl)`
         },
@@ -197,7 +199,7 @@ This can be used for:
 
     demo3: {
         breadcrumbs: `- [Home](/)
-- [Demo 3: Log in](/log in)`,
+- [Demo 3: Log in](/inloggen)`,
         unproven: {
             title: `# Demo 3: Log in`,
             alert: {

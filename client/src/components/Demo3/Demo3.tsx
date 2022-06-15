@@ -226,7 +226,7 @@ const Demo3: React.FC<IProps> = () => {
                                         heading: AscLocal.H2,
                                         paragraph: AscLocal.Paragraph,
                                         list: AscLocal.UL,
-                                        link: AscLocal.InlineLink
+                                        link: AscLocal.MarkDownToLink
                                     }}
                                 />
                             </section>
