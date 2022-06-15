@@ -25,11 +25,11 @@ exports[`Demo2 should render the initial header image 1`] = `
 
 }
 
-@media screen and (min-width:540px) {
+@media screen and (min-width:1024px) {
 
 }
 
-@media screen and (min-width:1024px) {
+@media screen and (min-width:540px) {
 
 }
 
@@ -295,11 +295,11 @@ exports[`Demo2 should update the page after completing the IRMA flow for not pro
 
 }
 
-@media screen and (min-width:540px) {
+@media screen and (min-width:1024px) {
 
 }
 
-@media screen and (min-width:1024px) {
+@media screen and (min-width:540px) {
 
 }
 
@@ -583,7 +583,7 @@ exports[`Demo2 should update the page after completing the IRMA flow for not pro
   flex-shrink: 0;
 }
 
-.c16 .c3 {
+.c17 .c3 {
   -webkit-align-self: flex-start;
   -ms-flex-item-align: start;
   align-self: flex-start;
@@ -656,14 +656,14 @@ exports[`Demo2 should update the page after completing the IRMA flow for not pro
   justify-content: space-between;
 }
 
-.c17 .c3 svg circle,
-.c17:hover .c3 svg circle,
-.c17 .c3 svg rect,
-.c17:hover .c3 svg rect,
-.c17 .c3 svg polygon,
-.c17:hover .c3 svg polygon,
-.c17 .c3 svg path,
-.c17:hover .c3 svg path {
+.c16 .c3 svg circle,
+.c16:hover .c3 svg circle,
+.c16 .c3 svg rect,
+.c16:hover .c3 svg rect,
+.c16 .c3 svg polygon,
+.c16:hover .c3 svg polygon,
+.c16 .c3 svg path,
+.c16:hover .c3 svg path {
   fill: #ffffff;
 }
 
@@ -743,6 +743,10 @@ exports[`Demo2 should update the page after completing the IRMA flow for not pro
 }
 
 @media screen and (min-width:1024px) {
+
+}
+
+@media screen and (min-width:1024px) {
   .c5 {
     font-size: 24px;
     line-height: 30px;
@@ -754,10 +758,6 @@ exports[`Demo2 should update the page after completing the IRMA flow for not pro
 }
 
 @media screen and (min-width:540px) {
-
-}
-
-@media screen and (min-width:1024px) {
 
 }
 
@@ -1061,11 +1061,11 @@ exports[`Demo2 should update the page after completing the IRMA flow for not pro
 
 }
 
-@media screen and (min-width:540px) {
+@media screen and (min-width:1024px) {
 
 }
 
-@media screen and (min-width:1024px) {
+@media screen and (min-width:540px) {
 
 }
 
@@ -1349,7 +1349,7 @@ exports[`Demo2 should update the page after completing the IRMA flow for not pro
   flex-shrink: 0;
 }
 
-.c16 .c3 {
+.c17 .c3 {
   -webkit-align-self: flex-start;
   -ms-flex-item-align: start;
   align-self: flex-start;
@@ -1422,14 +1422,14 @@ exports[`Demo2 should update the page after completing the IRMA flow for not pro
   justify-content: space-between;
 }
 
-.c17 .c3 svg circle,
-.c17:hover .c3 svg circle,
-.c17 .c3 svg rect,
-.c17:hover .c3 svg rect,
-.c17 .c3 svg polygon,
-.c17:hover .c3 svg polygon,
-.c17 .c3 svg path,
-.c17:hover .c3 svg path {
+.c16 .c3 svg circle,
+.c16:hover .c3 svg circle,
+.c16 .c3 svg rect,
+.c16:hover .c3 svg rect,
+.c16 .c3 svg polygon,
+.c16:hover .c3 svg polygon,
+.c16 .c3 svg path,
+.c16:hover .c3 svg path {
   fill: #ffffff;
 }
 
@@ -1509,6 +1509,10 @@ exports[`Demo2 should update the page after completing the IRMA flow for not pro
 }
 
 @media screen and (min-width:1024px) {
+
+}
+
+@media screen and (min-width:1024px) {
   .c5 {
     font-size: 24px;
     line-height: 30px;
@@ -1520,10 +1524,6 @@ exports[`Demo2 should update the page after completing the IRMA flow for not pro
 }
 
 @media screen and (min-width:540px) {
-
-}
-
-@media screen and (min-width:1024px) {
 
 }
 
@@ -1827,11 +1827,11 @@ exports[`Demo2 should update the page after completing the IRMA flow for proving
 
 }
 
-@media screen and (min-width:540px) {
+@media screen and (min-width:1024px) {
 
 }
 
-@media screen and (min-width:1024px) {
+@media screen and (min-width:540px) {
 
 }
 
@@ -2122,7 +2122,7 @@ exports[`Demo2 should update the page after completing the IRMA flow for proving
   flex-shrink: 0;
 }
 
-.c16 .c3 {
+.c17 .c3 {
   -webkit-align-self: flex-start;
   -ms-flex-item-align: start;
   align-self: flex-start;
@@ -2195,14 +2195,14 @@ exports[`Demo2 should update the page after completing the IRMA flow for proving
   justify-content: space-between;
 }
 
-.c17 .c3 svg circle,
-.c17:hover .c3 svg circle,
-.c17 .c3 svg rect,
-.c17:hover .c3 svg rect,
-.c17 .c3 svg polygon,
-.c17:hover .c3 svg polygon,
-.c17 .c3 svg path,
-.c17:hover .c3 svg path {
+.c16 .c3 svg circle,
+.c16:hover .c3 svg circle,
+.c16 .c3 svg rect,
+.c16:hover .c3 svg rect,
+.c16 .c3 svg polygon,
+.c16:hover .c3 svg polygon,
+.c16 .c3 svg path,
+.c16:hover .c3 svg path {
   fill: #ffffff;
 }
 
@@ -2282,6 +2282,10 @@ exports[`Demo2 should update the page after completing the IRMA flow for proving
 }
 
 @media screen and (min-width:1024px) {
+
+}
+
+@media screen and (min-width:1024px) {
   .c5 {
     font-size: 24px;
     line-height: 30px;
@@ -2293,10 +2297,6 @@ exports[`Demo2 should update the page after completing the IRMA flow for proving
 }
 
 @media screen and (min-width:540px) {
-
-}
-
-@media screen and (min-width:1024px) {
 
 }
 
@@ -2598,11 +2598,11 @@ exports[`Demo2 should update the page after completing the IRMA flow for proving
 
 }
 
-@media screen and (min-width:540px) {
+@media screen and (min-width:1024px) {
 
 }
 
-@media screen and (min-width:1024px) {
+@media screen and (min-width:540px) {
 
 }
 
@@ -2886,7 +2886,7 @@ exports[`Demo2 should update the page after completing the IRMA flow for proving
   flex-shrink: 0;
 }
 
-.c16 .c3 {
+.c17 .c3 {
   -webkit-align-self: flex-start;
   -ms-flex-item-align: start;
   align-self: flex-start;
@@ -2959,14 +2959,14 @@ exports[`Demo2 should update the page after completing the IRMA flow for proving
   justify-content: space-between;
 }
 
-.c17 .c3 svg circle,
-.c17:hover .c3 svg circle,
-.c17 .c3 svg rect,
-.c17:hover .c3 svg rect,
-.c17 .c3 svg polygon,
-.c17:hover .c3 svg polygon,
-.c17 .c3 svg path,
-.c17:hover .c3 svg path {
+.c16 .c3 svg circle,
+.c16:hover .c3 svg circle,
+.c16 .c3 svg rect,
+.c16:hover .c3 svg rect,
+.c16 .c3 svg polygon,
+.c16:hover .c3 svg polygon,
+.c16 .c3 svg path,
+.c16:hover .c3 svg path {
   fill: #ffffff;
 }
 
@@ -3046,6 +3046,10 @@ exports[`Demo2 should update the page after completing the IRMA flow for proving
 }
 
 @media screen and (min-width:1024px) {
+
+}
+
+@media screen and (min-width:1024px) {
   .c5 {
     font-size: 24px;
     line-height: 30px;
@@ -3057,10 +3061,6 @@ exports[`Demo2 should update the page after completing the IRMA flow for proving
 }
 
 @media screen and (min-width:540px) {
-
-}
-
-@media screen and (min-width:1024px) {
 
 }
 
@@ -3382,7 +3382,7 @@ exports[`Demo2 should update the page after failing the IRMA flow 1`] = `
   flex-shrink: 0;
 }
 
-.c16 .c3 {
+.c17 .c3 {
   -webkit-align-self: flex-start;
   -ms-flex-item-align: start;
   align-self: flex-start;
@@ -3455,14 +3455,14 @@ exports[`Demo2 should update the page after failing the IRMA flow 1`] = `
   justify-content: space-between;
 }
 
-.c17 .c3 svg circle,
-.c17:hover .c3 svg circle,
-.c17 .c3 svg rect,
-.c17:hover .c3 svg rect,
-.c17 .c3 svg polygon,
-.c17:hover .c3 svg polygon,
-.c17 .c3 svg path,
-.c17:hover .c3 svg path {
+.c16 .c3 svg circle,
+.c16:hover .c3 svg circle,
+.c16 .c3 svg rect,
+.c16:hover .c3 svg rect,
+.c16 .c3 svg polygon,
+.c16:hover .c3 svg polygon,
+.c16 .c3 svg path,
+.c16:hover .c3 svg path {
   fill: #ffffff;
 }
 
@@ -3542,6 +3542,10 @@ exports[`Demo2 should update the page after failing the IRMA flow 1`] = `
 }
 
 @media screen and (min-width:1024px) {
+
+}
+
+@media screen and (min-width:1024px) {
   .c5 {
     font-size: 24px;
     line-height: 30px;
@@ -3553,10 +3557,6 @@ exports[`Demo2 should update the page after failing the IRMA flow 1`] = `
 }
 
 @media screen and (min-width:540px) {
-
-}
-
-@media screen and (min-width:1024px) {
 
 }
 

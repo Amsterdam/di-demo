@@ -17,7 +17,7 @@ const A11Y: React.FC<IProps> = () => {
             <ContentBlock>
                 <ReactMarkDown
                     source={content.a11y.breadcrumbs}
-                    renderers={{ list: BreadCrumbs, listItem: BreadCrumbs.Item }}
+                    renderers={{ list: BreadCrumbs, listItem: BreadCrumbs.Item, link: AscLocal.MarkDownToLink }}
                 />
                 {SkipLinkEntry}
                 <ReactMarkDown

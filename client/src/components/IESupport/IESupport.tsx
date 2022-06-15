@@ -17,7 +17,7 @@ const IESupport: React.FC<IProps> = () => {
             <ContentBlock>
                 <ReactMarkDown
                     source={content.ieSupport.breadcrumbs}
-                    renderers={{ list: BreadCrumbs, listItem: BreadCrumbs.Item }}
+                    renderers={{ list: BreadCrumbs, listItem: BreadCrumbs.Item, link: AscLocal.MarkDownToLink }}
                 />
                 {SkipLinkEntry}
                 <ReactMarkDown

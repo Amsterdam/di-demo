@@ -21,7 +21,7 @@ const Homepage: React.FC<IProps> = () => {
         <PageTemplate>
             <ReactMarkDown
                 source={content.home.breadcrumbs}
-                renderers={{ list: BreadCrumbs, listItem: BreadCrumbs.Item }}
+                renderers={{ list: BreadCrumbs, listItem: BreadCrumbs.Item, link: AscLocal.MarkDownToLink }}
             />
             {SkipLinkEntry}
             <ReactMarkDown source={content.home.title} renderers={{ heading: AscLocal.H1 }} />

@@ -7,7 +7,7 @@ import * as AscLocal from '@components/LocalAsc/LocalAsc';
 import { Alert as AlertIcon } from '@amsterdam/asc-assets';
 import Footer from '@components/Footer/Footer';
 import { SkipLink } from '@components/SkipLink/SkipLink';
-import { useContent } from '@services/ContentProvider';
+import { Language, useContent, useGetCurrentLanguage, useSwichLanguage } from '@services/ContentProvider';
 
 interface IProps {
     className?: string;
@@ -20,17 +20,45 @@ declare global {
     }
 }
 
+const SmallLinkWithChevron = styled(AscLocal.LinkWithChevron)`
+    font-size: 16px;
+    font-weight: normal;
+
+    :hover {
+        cursor: pointer;
+    }
+
+    svg {
+        margin-top: 0.2rem;
+    }
+`;
+
 const isIE = !!document.documentMode;
 
 const PageTemplate: React.FC<IProps> = ({ children, className, hideTitle }) => {
     const content = useContent();
+    const language = useGetCurrentLanguage();
+    const switchLanguage = useSwichLanguage();
     const location = useLocation();
     const title = hideTitle ? undefined : <div>{content.header.title}</div>;
 
     return (
         <StyledRow className={className}>
             <StyledSkipLink />
-            <AscLocal.Header fullWidth={false} tall homeLink={content.header.homeLink} navigation={title} />
+            <AscLocal.Header
+                fullWidth={false}
+                tall
+                homeLink={content.header.homeLink}
+                navigation={title}
+                links={
+                    <SmallLinkWithChevron
+                        role="button"
+                        onClick={() => switchLanguage(language === Language.EN ? Language.NL : Language.EN)}
+                    >
+                        {language === Language.NL ? 'English site' : 'Nederlandse site'}
+                    </SmallLinkWithChevron>
+                }
+            />
             <StyledColumn span={12}>
                 <main>
                     {isIE && location.pathname !== AppRoutes.IE_SUPPORT.path && (

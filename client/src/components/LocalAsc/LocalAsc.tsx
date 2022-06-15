@@ -1,4 +1,5 @@
 import React, { useContext, useCallback, useState, useLayoutEffect, ReactElement } from 'react';
+import { Link as RRLink } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
 import ReactMarkdown from 'react-markdown';
 import {
@@ -422,3 +423,7 @@ export const IrmaLogoIcon = styled.img.attrs({ src: '/assets/irma_logo.svg', alt
 export const ErrorMessage = styled(AscErrorMessage)`
 margin - top: ${themeSpacing(2)};
 `;
+
+export const MarkDownToLink: React.FC<{
+    href: string;
+}> = ({ href, children }) => <RRLink to={href}>{children}</RRLink>;

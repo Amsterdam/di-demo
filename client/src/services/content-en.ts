@@ -52,7 +52,7 @@ Would you like to know more about IRMA?
         },
         sidebar: {
             box: `Prove who you are with IRMA, simply and in a way that suits you
-![IRMA Logo](/assets/irma_logo.svg “Read more about IRMA")
+![IRMA Logo](/assets/irma_logo.svg "Read more about IRMA")
 # Why IRMA?`,
             boxLink: `https://www.amsterdam.nl/inloggen-met-irma`,
             boxLabel: `Why IRMA?`
@@ -128,7 +128,7 @@ Prove you are at least 18 or 65 by using the following information to identify y
       `,
         why: {
             title: 'Why is this information being requested?',
-            body: '**At least 18, at least 65**   nThe city council can grant you access to services based on your age.'
+            body: '**At least 18, at least 65** The city council can grant you access to services based on your age.'
         },
         button18: `prove 18+ using IRMA`,
         button65: `prove 65+ using IRMA`,

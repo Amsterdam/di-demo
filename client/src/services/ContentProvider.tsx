@@ -2,22 +2,24 @@ import React, { useContext, useState } from 'react';
 import contentNL from './content-nl';
 import contentEN from './content-en';
 
-enum Language {
+export enum Language {
     NL = 'nl',
     EN = 'en'
 }
 
 export type Content = typeof contentNL;
 
-const defaultContentContext = {
-    language: Language.NL,
-    content: contentNL
-};
-
 type ContentContextType = {
     language: Language;
     content: Content;
-    switchLanguage?: (language: Language) => void;
+    switchLanguage: (language: Language) => void;
+};
+
+const defaultContentContext = {
+    language: Language.NL,
+    content: contentNL,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    switchLanguage: (l: Language) => {}
 };
 
 export const ContentContext = React.createContext<ContentContextType>(defaultContentContext);
@@ -42,4 +44,16 @@ export const useContent = (): Content => {
     const { content } = useContext(ContentContext);
 
     return content;
+};
+
+export const useSwichLanguage = (): ((language: Language) => void) => {
+    const { switchLanguage } = useContext(ContentContext);
+
+    return switchLanguage;
+};
+
+export const useGetCurrentLanguage = (): Language => {
+    const { language } = useContext(ContentContext);
+
+    return language;
 };

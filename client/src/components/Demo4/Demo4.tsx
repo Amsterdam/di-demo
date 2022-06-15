@@ -149,7 +149,7 @@ const Demo4: React.FC<IProps> = () => {
 
                 <ReactMarkDown
                     source={content.demo4.breadcrumbs}
-                    renderers={{ list: BreadCrumbs, listItem: BreadCrumbs.Item }}
+                    renderers={{ list: BreadCrumbs, listItem: BreadCrumbs.Item, link: AscLocal.MarkDownToLink }}
                 />
 
                 {SkipLinkEntry}

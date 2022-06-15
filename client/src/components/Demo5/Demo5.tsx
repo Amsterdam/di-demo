@@ -191,7 +191,7 @@ const Demo5: React.FC<IProps> = () => {
                 {!state.hasResult && !state.hasError && <DemoNotification />}
                 <ReactMarkDown
                     source={content.demo5.breadcrumbs}
-                    renderers={{ list: BreadCrumbs, listItem: BreadCrumbs.Item }}
+                    renderers={{ list: BreadCrumbs, listItem: BreadCrumbs.Item, link: AscLocal.MarkDownToLink }}
                 />
 
                 {SkipLinkEntry}

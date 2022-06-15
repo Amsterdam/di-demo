@@ -18,7 +18,7 @@ const Cookies: React.FC<IProps> = () => {
             <ContentBlock>
                 <ReactMarkDown
                     source={content.cookies.breadcrumbs}
-                    renderers={{ list: BreadCrumbs, listItem: BreadCrumbs.Item }}
+                    renderers={{ list: BreadCrumbs, listItem: BreadCrumbs.Item, link: AscLocal.MarkDownToLink }}
                 />
                 {SkipLinkEntry}
                 <ReactMarkDown
