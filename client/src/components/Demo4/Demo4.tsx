@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useReducer, useCallback } from 'react';
-import content, { reduceAndTranslateEmptyVars } from '@services/content';
+import { reduceAndTranslateEmptyVars } from '@services/content-helpers';
 import ReactMarkDown from 'react-markdown';
 import defList from '@services/deflist';
 import * as AscLocal from '@components/LocalAsc/LocalAsc';
@@ -21,12 +21,14 @@ import WhyIRMA from '@components/WhyIRMA/WhyIRMA';
 import { SkipLinkEntry } from '@components/SkipLink/SkipLink';
 import useIrmaSession, { IIrmaSessionOutputData } from '@hooks/useIrmaSession';
 import { isMobile } from '@services/createIrmaSession';
+import { useContent } from '@services/ContentProvider';
 
 export interface IProps {}
 
 const OPTIONAL_IRMA_ATTRIBUTES = ['houseNumber'];
 
 const Demo4: React.FC<IProps> = () => {
+    const content = useContent();
     const formEl = useRef(null);
 
     const [credentialSource, setCredentialSource] = useState(CredentialSource.PRODUCTION);
@@ -174,7 +176,9 @@ const Demo4: React.FC<IProps> = () => {
                         iconSize={22}
                         heading={content.demoEmptyVarsAlert.heading}
                         content={
-                            content.demoEmptyVarsAlert.content + reduceAndTranslateEmptyVars(state.emptyVars) + '.'
+                            content.demoEmptyVarsAlert.content +
+                            reduceAndTranslateEmptyVars(state.emptyVars, content) +
+                            '.'
                         }
                         dataTestId="hasErrorAlert"
                     />

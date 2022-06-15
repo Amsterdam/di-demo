@@ -1,16 +1,18 @@
 import React from 'react';
 import ReactMarkDown from 'react-markdown';
 import { Accordion } from '@amsterdam/asc-ui';
-import content from '@services/content';
 import * as AscLocal from '@components/LocalAsc/LocalAsc';
 import PageTemplate from '@components/PageTemplate/PageTemplate';
 import BreadCrumbs from '@components/BreadCrumbs';
 import ContentBlock from '@components/ContentBlock/ContentBlock';
 import { SkipLinkEntry } from '@components/SkipLink/SkipLink';
+import { useContent } from '@services/ContentProvider';
 
 export interface IProps {}
 
 const Cookies: React.FC<IProps> = () => {
+    const content = useContent();
+
     return (
         <PageTemplate>
             <ContentBlock>

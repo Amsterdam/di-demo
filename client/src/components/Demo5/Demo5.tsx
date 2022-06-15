@@ -4,7 +4,6 @@ import ReactMarkDown from 'react-markdown';
 import { Accordion, themeSpacing, Button } from '@amsterdam/asc-ui';
 import { Alert as AlertIcon } from '@amsterdam/asc-assets';
 import { Map, BaseLayer, Marker, getCrsRd } from '@amsterdam/arm-core';
-import content from '@services/content';
 import deflist from '@services/deflist';
 import * as AscLocal from '@components/LocalAsc/LocalAsc';
 import CredentialSelector, { CredentialSource } from '@components/CredentialSelector/CredentialSelector';
@@ -24,6 +23,7 @@ import EmphasisBlock from '@components/EmphasisBlock/EmphasisBlock';
 import { SkipLinkEntry } from '@components/SkipLink/SkipLink';
 import useIrmaSession, { IIrmaSessionOutputData } from '@hooks/useIrmaSession';
 import { isMobile } from '@services/createIrmaSession';
+import { useContent } from '@services/ContentProvider';
 
 export interface IProps {}
 
@@ -34,6 +34,7 @@ export interface IDemo5Query {
 }
 
 const Demo5: React.FC<IProps> = () => {
+    const content = useContent();
     const [credentialSource, setCredentialSource] = useState(CredentialSource.PRODUCTION);
     const [state, dispatch] = useReducer(reducer, initialState);
     const formRef = useRef<HTMLFormElement>(null);

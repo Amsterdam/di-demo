@@ -6,8 +6,8 @@ import AppRoutes from '@app/AppRoutes';
 import * as AscLocal from '@components/LocalAsc/LocalAsc';
 import { Alert as AlertIcon } from '@amsterdam/asc-assets';
 import Footer from '@components/Footer/Footer';
-import content from '@services/content';
 import { SkipLink } from '@components/SkipLink/SkipLink';
+import { useContent } from '@services/ContentProvider';
 
 interface IProps {
     className?: string;
@@ -23,6 +23,7 @@ declare global {
 const isIE = !!document.documentMode;
 
 const PageTemplate: React.FC<IProps> = ({ children, className, hideTitle }) => {
+    const content = useContent();
     const location = useLocation();
     const title = hideTitle ? undefined : <div>{content.header.title}</div>;
 

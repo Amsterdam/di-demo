@@ -5,7 +5,6 @@ import { Accordion, themeSpacing } from '@amsterdam/asc-ui';
 import { Alert as AlertIcon } from '@amsterdam/asc-assets';
 import { Checkmark } from '@amsterdam/asc-assets';
 import useIrmaSession, { IIrmaSessionOutputData } from '@hooks/useIrmaSession';
-import content from '@services/content';
 import * as AscLocal from '@components/LocalAsc/LocalAsc';
 import CredentialSelector, { CredentialSource } from '@components/CredentialSelector/CredentialSelector';
 import ExternalLink from '@components/ExternalLink/ExternalLink';
@@ -20,10 +19,12 @@ import preloadDemoImages from '@services/preloadImages';
 import { startSurvey as startUsabillaSurvey } from '@services/usabilla';
 import { SkipLinkEntry } from '@components/SkipLink/SkipLink';
 import { isMobile } from '@services/createIrmaSession';
+import { useContent } from '@services/ContentProvider';
 
 export interface IProps {}
 
 const Demo1: React.FC<IProps> = () => {
+    const content = useContent();
     const [credentialSource, setCredentialSource] = useState(CredentialSource.PRODUCTION);
     const [isOver18, setIsOver18] = useState<boolean>(false);
     const [hasResult18, setHasResult18] = useState<boolean>(false);
