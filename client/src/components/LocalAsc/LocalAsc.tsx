@@ -20,6 +20,7 @@ import {
     Button
 } from '@amsterdam/asc-ui';
 import { TextAreaProps as AscTextAreaProps } from '@amsterdam/asc-ui/lib/components/TextArea';
+import { Language, useCurrentLanguage } from '@services/ContentProvider';
 
 const lineHeight = '1.5em';
 
@@ -392,6 +393,7 @@ interface ITextAreaProps {
 }
 
 export const TextArea = styled(({ showCounter, className, ...props }: AscTextAreaProps & ITextAreaProps) => {
+    const language = useCurrentLanguage();
     const [counter, setCounter] = useState<number>(0);
     const onChange = useCallback(event => {
         setCounter(event.target.value.length);
@@ -402,7 +404,7 @@ export const TextArea = styled(({ showCounter, className, ...props }: AscTextAre
             <AscTextArea {...props} className="textarea" onChange={onChange} />
             {showCounter && props.maxLength && (
                 <div className="counter">
-                    {counter}/{props.maxLength} tekens
+                    {counter}/{props.maxLength} {language === Language.EN ? 'characters' : 'tekens'}
                 </div>
             )}
         </div>
