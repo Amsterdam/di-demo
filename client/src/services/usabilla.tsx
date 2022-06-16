@@ -1,9 +1,11 @@
 import '@services/lightning.js';
+import React, { useEffect } from 'react';
+import { Language, useCurrentLanguage } from './ContentProvider';
 import { isMobile } from './createIrmaSession';
 
 let usabilla_live: any;
 
-const initUsabilla = (): void => {
+const initUsabilla = (language: Language): void => {
     if (isMobile()) {
         usabilla_live = (window as any)['lightningjs'].require('usabilla_live', '//w.usabilla.com/7eb436c19ab1.js');
     } else {
@@ -23,4 +25,14 @@ export const startSurvey = (timeout = 2000): void => {
     }
 };
 
-initUsabilla();
+// initUsabilla();
+
+export const UsabillaProvider: React.FC = () => {
+    const language = useCurrentLanguage();
+
+    useEffect(() => {
+        initUsabilla(language);
+    }, [language]);
+
+    return <></>;
+};
