@@ -337,6 +337,10 @@ export const Header = styled(AscHeader).attrs(({ theme }) => ({
         flex-wrap: nowrap;
         padding: 0;
 
+        @media ${breakpoint('max-width', 'tabletM')} {
+            flex-wrap: wrap;
+        }
+
         @media ${breakpoint('max-width', 'laptopM')} {
             height: 68px;
             h1:first-child a {
@@ -365,6 +369,33 @@ export const Header = styled(AscHeader).attrs(({ theme }) => ({
             justify-content: flex-start;
             font-weight: 500;
             font-size: 1.2rem;
+
+            @media ${breakpoint('max-width', 'tabletM')} {
+                padding-right: 215px;
+            }
+
+            @media ${breakpoint('max-width', 'tabletS')} {
+                padding-right: 125px;
+            }
+
+            @media ${breakpoint('max-width', 'mobileL')} {
+                padding-right: 40px;
+            }
+        }
+
+        > div {
+            display: flex !important;
+
+            @media ${breakpoint('max-width', 'tabletM')} {
+                background-color: ${themeColor('tint', 'level2')} !important;
+                position: static;
+                flex-grow: 1;
+                margin-right: -30px;
+                margin-left: -20px;
+                padding-left: 20px;
+                padding-bottom: 2px;
+                justify-content: flex-start;
+            }
         }
     }
 `;
