@@ -572,8 +572,8 @@ Do you have a question to which you cannot find the answer on this website? Then
 - [Werkenbij](https://www.amsterdam.nl/bestuur-organisatie/werkenbij/)`,
         column3: `# What is there to do in Amsterdam?
 Information about tourism, culture, nightlife, events, and more can be found at [I amsterdam](https://www.iamsterdam.com/nl)`,
-        bottom: `[About this site](https://www.amsterdam.nl/overdezesite/)
-[Privacy](https://www.amsterdam.nl/privacy/)
+        bottom: `[About this site](https://www.amsterdam.nl/en/general-items/items-footer/about-website/)
+[Privacy](https://www.amsterdam.nl/en/general-items/items-footer/privacy-city-of-amsterdam/)
 [Accessibility](/toegankelijkheidsverklaring)
 [Cookies on this site](/cookies)`
     },
