@@ -18,9 +18,11 @@ type ContentContextType = {
     switchLanguage: (language: Language) => void;
 };
 
+const sessionLanguage = safeSessionStorage.getItem(STORAGE_KEY) ?? Language.NL;
+
 const defaultContentContext = {
-    language: safeSessionStorage.getItem(STORAGE_KEY) ?? Language.NL,
-    content: safeSessionStorage.getItem(STORAGE_KEY) === Language.EN ? contentEN : contentNL,
+    language: sessionLanguage,
+    content: sessionLanguage === Language.EN ? contentEN : contentNL,
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     switchLanguage: (l: Language) => {}
 };
@@ -28,7 +30,8 @@ const defaultContentContext = {
 export const ContentContext = React.createContext<ContentContextType>(defaultContentContext);
 
 export const ContentProvider: React.FC = ({ children }) => {
-    const [language, setLanguage] = useState<Language>(safeSessionStorage.getItem(STORAGE_KEY) ?? Language.NL);
+    const sessionLanguage = safeSessionStorage.getItem(STORAGE_KEY) ?? Language.NL;
+    const [language, setLanguage] = useState<Language>(sessionLanguage);
 
     return (
         <ContentContext.Provider
