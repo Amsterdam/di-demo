@@ -1,4 +1,5 @@
 import React, { useContext, useCallback, useState, useLayoutEffect, ReactElement } from 'react';
+import { Link as RRLink } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
 import ReactMarkdown from 'react-markdown';
 import {
@@ -19,6 +20,7 @@ import {
     Button
 } from '@amsterdam/asc-ui';
 import { TextAreaProps as AscTextAreaProps } from '@amsterdam/asc-ui/lib/components/TextArea';
+import { Language, useCurrentLanguage } from '@services/ContentProvider';
 
 const lineHeight = '1.5em';
 
@@ -391,6 +393,7 @@ interface ITextAreaProps {
 }
 
 export const TextArea = styled(({ showCounter, className, ...props }: AscTextAreaProps & ITextAreaProps) => {
+    const language = useCurrentLanguage();
     const [counter, setCounter] = useState<number>(0);
     const onChange = useCallback(event => {
         setCounter(event.target.value.length);
@@ -401,7 +404,7 @@ export const TextArea = styled(({ showCounter, className, ...props }: AscTextAre
             <AscTextArea {...props} className="textarea" onChange={onChange} />
             {showCounter && props.maxLength && (
                 <div className="counter">
-                    {counter}/{props.maxLength} tekens
+                    {counter}/{props.maxLength} {language === Language.EN ? 'characters' : 'tekens'}
                 </div>
             )}
         </div>
@@ -422,3 +425,7 @@ export const IrmaLogoIcon = styled.img.attrs({ src: '/assets/irma_logo.svg', alt
 export const ErrorMessage = styled(AscErrorMessage)`
 margin - top: ${themeSpacing(2)};
 `;
+
+export const MarkDownToLink: React.FC<{
+    href: string;
+}> = ({ href, children }) => <RRLink to={href}>{children}</RRLink>;
