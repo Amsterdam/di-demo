@@ -25,8 +25,6 @@ export const startSurvey = (timeout = 2000): void => {
     }
 };
 
-// initUsabilla();
-
 export const UsabillaProvider: React.FC = () => {
     const language = useCurrentLanguage();
 
