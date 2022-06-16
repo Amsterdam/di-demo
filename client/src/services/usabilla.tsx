@@ -1,5 +1,5 @@
-import '@services/lightning.js';
 import React, { useEffect } from 'react';
+import '@services/lightning.js';
 import { Language, useCurrentLanguage } from './ContentProvider';
 import { isMobile } from './createIrmaSession';
 
