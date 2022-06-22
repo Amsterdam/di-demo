@@ -7,9 +7,15 @@ let usabilla_live: any;
 
 const initUsabilla = (language: Language): void => {
     if (isMobile()) {
-        usabilla_live = (window as any)['lightningjs'].require('usabilla_live', '//w.usabilla.com/7eb436c19ab1.js');
+        usabilla_live = (window as any)['lightningjs'].require(
+            'usabilla_live',
+            `//w.usabilla.com/${language === Language.NL ? '7eb436c19ab1' : '4c100286aae6'}.js`
+        );
     } else {
-        usabilla_live = (window as any)['lightningjs'].require('usabilla_live', '//w.usabilla.com/1400b371716f.js');
+        usabilla_live = (window as any)['lightningjs'].require(
+            'usabilla_live',
+            `//w.usabilla.com/${language === Language.NL ? '1400b371716f' : '9e345fa8df43'}.js`
+        );
     }
 };
 
