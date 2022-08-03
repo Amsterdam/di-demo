@@ -32,35 +32,28 @@ const Demo3: React.FC<IProps> = () => {
     const [name, setName] = useState<string>('');
     const content = useContent();
 
-    const { modal, startIrmaSession }: IIrmaSessionOutputData = useIrmaSession();
-
-    const getSession = useCallback(
-        (event, alwaysShowQRCode = false) => {
-            event.persist();
-            startIrmaSession({
-                demoPath: 'demos/demo3',
-                useDemoCredentials: credentialSource === CredentialSource.DEMO,
-                alwaysShowQRCode,
-                resultCallback: async (result: any) => {
-                    if (result) {
-                        setHasResult(true);
-                        setHasError(false);
-                        setEmail(result['email']);
-                        if (result['fullname'] !== undefined) {
-                            setName(result['fullname']);
-                        } else {
-                            setName(`${result['firstnames']} ${result['surname']}`);
-                        }
-                    } else {
-                        setHasError(true);
-                    }
-                    window.scrollTo(0, 0);
-                    startUsabillaSurvey();
+    const { modal, url, showModal }: IIrmaSessionOutputData = useIrmaSession({
+        irmaQrId: 'irma-qr-inloggen',
+        demoPath: 'demos/demo3',
+        useDemoCredentials: credentialSource === CredentialSource.DEMO,
+        alwaysShowQRCode: false,
+        resultCallback: async (result: any) => {
+            if (result) {
+                setHasResult(true);
+                setHasError(false);
+                setEmail(result['email']);
+                if (result['fullname'] !== undefined) {
+                    setName(result['fullname']);
+                } else {
+                    setName(`${result['firstnames']} ${result['surname']}`);
                 }
-            });
-        },
-        [credentialSource, startIrmaSession]
-    );
+            } else {
+                setHasError(true);
+            }
+            window.scrollTo(0, 0);
+            startUsabillaSurvey();
+        }
+    });
 
     // Define dynamic header image
     const [headerImg, setHeaderImg] = useState<IHeaderImageProps>({
@@ -159,9 +152,15 @@ const Demo3: React.FC<IProps> = () => {
                                 </AscLocal.AccordionContainer>
                             </section>
                             <section>
-                                <AscLocal.QRCodeButton onClick={getSession}>
-                                    {content.demo3.button}
-                                </AscLocal.QRCodeButton>
+                                {isMobile() ? (
+                                    <AscLocal.QRCodeLink dataTestId="qrCodeButtonInloggen" href={url}>
+                                        {content.demo3.button}
+                                    </AscLocal.QRCodeLink>
+                                ) : (
+                                    <AscLocal.QRCodeButton onClick={showModal}>
+                                        {content.demo3.button}
+                                    </AscLocal.QRCodeButton>
+                                )}
                                 {modal}
                             </section>
                             <section>
@@ -178,11 +177,9 @@ const Demo3: React.FC<IProps> = () => {
                                     <p>
                                         {content.showQrOnMobile.label}
                                         <br />
-                                        <AscLocal.UnderlinedLink
-                                            onClick={(e: React.SyntheticEvent) => getSession(e, true)}
-                                        >
+                                        <AscLocal.ShowQRLink onClick={showModal}>
                                             {content.showQrOnMobile.link}
-                                        </AscLocal.UnderlinedLink>
+                                        </AscLocal.ShowQRLink>
                                     </p>
                                 </section>
                             )}

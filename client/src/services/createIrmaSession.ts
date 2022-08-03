@@ -26,12 +26,12 @@ export const getConfig = async (): Promise<IIrmaServerConfig> => {
 };
 
 export const isMobile = (): boolean => {
-    return userAgent === 'Android' || userAgent === 'iOS';
+    return true || userAgent === 'Android' || userAgent === 'iOS';
 };
 
 // Types for Irma Plugins
 export interface IStateChangeCallbackMapping {
-    [stateName: string]: () => void;
+    [stateName: string]: (payload?: any) => void;
 }
 
 export interface IIrmaSessionData {}
@@ -57,9 +57,10 @@ class IrmaSkipMobileChoice {
         if (newState === 'ShowingIrmaButton') {
             if (this._alwaysShowQRCode) {
                 this._stateMachine.transition('chooseQR', payload);
-            } else {
-                window.location.href = payload.mobile;
             }
+            // } else {
+            //     window.location.href = payload.mobile;
+            // }
         }
     }
 }
@@ -69,9 +70,9 @@ class IrmaStateChangeCallback {
         this._mapping = options.callBackMapping;
     }
 
-    stateChange({ newState }: { newState: any }) {
+    stateChange({ newState, payload }: { newState: any; payload: any }) {
         if (Object.keys(this._mapping).indexOf(newState) !== -1 && typeof this._mapping[newState] === 'function') {
-            this._mapping[newState]();
+            this._mapping[newState](payload);
         } else if (this._mapping.rest && typeof this._mapping.rest === 'function') {
             this._mapping.rest();
         }
@@ -107,7 +108,7 @@ const createIrmaSession = async (
         .join('&');
 
     const irma = new IrmaCore({
-        debugging: true,
+        debugging: process.env.NODE_ENV !== 'production',
         element: `#${holderElementId}`,
         callBackMapping,
         alwaysShowQRCode,
@@ -121,7 +122,8 @@ const createIrmaSession = async (
                     // If the response after starting an irma session contains a session cookie, we'll store it in sessionStorage too.
                     // This is because of a bug with Set-Cookie header in older iOS versions.
                     const { sessionId, sessionPtr } = await response.json();
-                    sessionStorage.setItem('irma-demo.sid', sessionId);
+                    sessionStorage.setItem(`irma-demo.sid.${holderElementId}`, sessionId);
+                    sessionStorage.setItem(`irma-demo.sptr.${dataType}`, JSON.stringify(sessionPtr));
                     return sessionPtr;
                 }
             },
@@ -131,7 +133,7 @@ const createIrmaSession = async (
             },
 
             result: {
-                url: () => `/demos/result?sid=${sessionStorage.getItem('irma-demo.sid')}`
+                url: () => `/demos/result?sid=${sessionStorage.getItem(`irma-demo.sid.${holderElementId}`)}`
             }
         }
     });

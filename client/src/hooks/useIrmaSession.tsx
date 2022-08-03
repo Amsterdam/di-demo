@@ -9,27 +9,31 @@ interface IIrmaSessionInputData {
     resultCallback: (irmaSessionResult: any) => void;
     extraQuery?: { [key: string]: string };
     alwaysShowQRCode?: boolean;
+    irmaQrId: string;
 }
 
 export interface IIrmaSessionOutputData {
     modal: JSX.Element | undefined;
-    startIrmaSession: (irmaSessionInputData: IIrmaSessionInputData) => void;
+    url: string | undefined;
+    showModal: () => void;
+    startIrmaSession: (activeIrmaSessionDataInput?: IIrmaSessionInputData) => void;
 }
 
-const useIrmaSession = (): IIrmaSessionOutputData => {
+const useIrmaSession = (activeIrmaSessionDataInput?: IIrmaSessionInputData): IIrmaSessionOutputData => {
     const [QRIsShowing, setQRIsShowing] = useState<boolean>(false);
-    const [activeIrmaSessionData, setActiveIrmaSessionData] = useState<IIrmaSessionInputData | undefined>();
+    const [showModal, setShowModal] = useState(false);
+    const [activeIrmaSessionData, setActiveIrmaSessionData] = useState<IIrmaSessionInputData | undefined>(
+        activeIrmaSessionDataInput
+    );
+    const [url, setUrl] = useState<string>();
+    const [deferStart, setDeferStart] = useState<boolean>(activeIrmaSessionDataInput === undefined);
     const language = useCurrentLanguage();
-
-    // Create a trigger function that opens the modal with session data and wait for it to be rendered
-    const startIrmaSession = (irmaSessionInputData: IIrmaSessionInputData) => {
-        setActiveIrmaSessionData(irmaSessionInputData);
-    };
 
     // Define callback to manually close modal
     const closeModal = useCallback(() => {
         setQRIsShowing(false);
         setActiveIrmaSessionData(undefined);
+        setShowModal(false);
     }, []);
 
     // // Init trigger to start session (after modal has mounted)
@@ -40,13 +44,18 @@ const useIrmaSession = (): IIrmaSessionOutputData => {
 
         // Define the callback mapping that triggers functions on IRMA state changes
         const callBackMapping = {
-            ShowingQRCode: () => {
-                setQRIsShowing(true);
+            ShowingQRCode: (payload: { mobile: string }) => {
+                if (isMobile() && activeIrmaSessionData?.alwaysShowQRCode !== true) {
+                    setUrl(payload?.mobile ?? '');
+                } else {
+                    setQRIsShowing(true);
+                }
             },
             ShowingQRCodeInstead: () => {
                 setQRIsShowing(true);
             },
-            ShowingIrmaButton: () => {
+            ShowingIrmaButton: (payload: { mobile: string }) => {
+                setUrl(payload?.mobile ?? '');
                 if (isMobile() && activeIrmaSessionData?.alwaysShowQRCode !== true) {
                     closeModal();
                 }
@@ -58,31 +67,53 @@ const useIrmaSession = (): IIrmaSessionOutputData => {
 
         // Run the actual IRMA session and fetch the result
         const startIrmaSession = async (): Promise<any> => {
+            console.log('startIrmaSession', activeIrmaSessionData);
             const result: any = await createIrmaSession(
                 activeIrmaSessionData.demoPath,
-                'irma-qr',
+                activeIrmaSessionData?.irmaQrId || 'irma-qr',
                 { demo: activeIrmaSessionData.useDemoCredentials, ...activeIrmaSessionData.extraQuery },
                 callBackMapping,
                 activeIrmaSessionData.alwaysShowQRCode,
                 language
             );
+
             activeIrmaSessionData.resultCallback(result);
             closeModal();
         };
-        startIrmaSession();
-    }, [activeIrmaSessionData, closeModal]);
+        if (!deferStart) {
+            startIrmaSession();
+        }
+    }, [activeIrmaSessionData, closeModal, language]);
 
-    const modalElement = (
-        <IrmaSessionModal
-            showModal={activeIrmaSessionData !== undefined}
-            QRIsShowing={QRIsShowing}
-            closeModal={closeModal}
-            // Make the modal invisible for mobile flow unless alwaysShowQRCode is explicitly set
-            hideForMobileFlow={isMobile() && activeIrmaSessionData?.alwaysShowQRCode !== true}
-        />
+    const modalElement = isMobile() ? (
+        <div id={activeIrmaSessionDataInput?.irmaQrId} style={{ display: 'none' }}></div>
+    ) : (
+        <div style={{ display: showModal ? 'block' : 'none' }}>
+            <IrmaSessionModal
+                showModal={true}
+                QRIsShowing={QRIsShowing}
+                closeModal={closeModal}
+                irmaQrId={activeIrmaSessionDataInput?.irmaQrId || 'irma-qr'}
+                // Make the modal invisible for mobile flow unless alwaysShowQRCode is explicitly set
+                hideForMobileFlow={!showModal}
+            />
+        </div>
     );
 
-    const irmaSessionOutputData: IIrmaSessionOutputData = { modal: modalElement, startIrmaSession };
+    const irmaSessionOutputData: IIrmaSessionOutputData = {
+        modal: modalElement,
+        url,
+        showModal: () => {
+            setShowModal(true);
+        },
+        startIrmaSession: activeIrmaSessionDataInput => {
+            if (activeIrmaSessionDataInput !== undefined) {
+                setActiveIrmaSessionData(activeIrmaSessionDataInput);
+            }
+
+            setDeferStart(false);
+        }
+    };
     return irmaSessionOutputData;
 };
 
