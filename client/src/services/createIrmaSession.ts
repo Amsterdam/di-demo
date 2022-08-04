@@ -58,9 +58,6 @@ class IrmaSkipMobileChoice {
             if (this._alwaysShowQRCode) {
                 this._stateMachine.transition('chooseQR', payload);
             }
-            // } else {
-            //     window.location.href = payload.mobile;
-            // }
         }
     }
 }
@@ -95,14 +92,14 @@ export class IrmaAbortOnCancel {
 
 // IRMA Session handler
 
-const createIrmaSession = async (
+const createIrmaSession = (
     dataType: string,
     holderElementId: string,
     query = {},
     callBackMapping?: IStateChangeCallbackMapping,
     alwaysShowQRCode = false,
     language = 'nl'
-): Promise<unknown> => {
+): typeof IrmaCore => {
     const queryString = Object.keys(query)
         .map((key, index) => `${index === 0 ? '?' : ''}${key}=${(query as any)[key]}`)
         .join('&');
@@ -150,38 +147,7 @@ const createIrmaSession = async (
     }
     irma.use(IrmaAbortOnCancel);
 
-    try {
-        const result = await irma.start();
-        return reduceIRMAResult(result.disclosed);
-    } catch (e) {
-        return null;
-    }
-};
-
-interface IDisclosedCredentialSet {
-    [index: number]: IDisclosedCredential;
-}
-
-interface IDisclosedCredential {
-    id: string;
-    rawvalue: string;
-    value: { [key: string]: unknown };
-    status: string;
-    issuancetime: number;
-}
-
-const reduceIRMAResult = (disclosedCredentialSets: IDisclosedCredentialSet[]) => {
-    let joinedResults = {};
-    disclosedCredentialSets.forEach((conjunction: IDisclosedCredential[]) => {
-        joinedResults = {
-            ...joinedResults,
-            ...conjunction.reduce(
-                (acc, { id, rawvalue }) => ({ ...acc, [(id as any).match(/[^.]*$/g)[0]]: rawvalue }),
-                {}
-            )
-        };
-    });
-    return joinedResults;
+    return irma;
 };
 
 export default createIrmaSession;

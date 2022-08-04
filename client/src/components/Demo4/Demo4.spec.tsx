@@ -1,8 +1,9 @@
 import React from 'react';
 import { screen, act, fireEvent } from '@testing-library/react';
-import { setupMocks, wrappedRender } from '@test/utils';
+import { setupIrmaMocks, setupMocks, wrappedRender } from '@test/utils';
 import Demo4 from '@components/Demo4/Demo4';
 import createIrmaSession from '@services/createIrmaSession';
+import reduceIRMAResult from '@services/reduceIRMAResult';
 import content from '@services/content-nl';
 
 // Setup all the generic mocks
@@ -10,6 +11,7 @@ setupMocks();
 
 // MockcreateIrmaSession
 jest.mock('@services/createIrmaSession');
+jest.mock('@services/reduceIRMAResult');
 
 describe('Demo4', () => {
     it('should render the initial header image', async () => {
@@ -35,24 +37,15 @@ describe('Demo4', () => {
 
     it('should update the page after completing the IRMA flow', async () => {
         // Adjust mocked CreateIrmaSession to return a correct credentials
-        const mockedCreateIrmaSession = createIrmaSession as jest.Mock;
-        mockedCreateIrmaSession.mockReturnValue(
-            new Promise(resolve =>
-                setTimeout(
-                    () =>
-                        resolve({
-                            fullname: 'Test test',
-                            street: 'Teststraat',
-                            houseNumber: 100,
-                            zipcode: '1011PT',
-                            city: 'Amsterdam',
-                            mobilenumber: '0612345678',
-                            email: 'test@test.com'
-                        }),
-                    100
-                )
-            )
-        );
+        setupIrmaMocks(reduceIRMAResult, createIrmaSession, {
+            fullname: 'Test test',
+            street: 'Teststraat',
+            houseNumber: 100,
+            zipcode: '1011PT',
+            city: 'Amsterdam',
+            mobilenumber: '0612345678',
+            email: 'test@test.com'
+        });
 
         // Need to use fakeTimers to control when results come in
         jest.useFakeTimers();
@@ -95,8 +88,7 @@ describe('Demo4', () => {
 
     it('should update the page after failing the IRMA flow', async () => {
         // Adjust mocked CreateIrmaSession to return a correct credentials
-        const mockedCreateIrmaSession = createIrmaSession as jest.Mock<unknown>;
-        mockedCreateIrmaSession.mockReturnValue(new Promise(resolve => setTimeout(() => resolve(null), 100)));
+        setupIrmaMocks(reduceIRMAResult, createIrmaSession, null);
 
         jest.useFakeTimers();
 

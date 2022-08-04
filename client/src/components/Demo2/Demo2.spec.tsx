@@ -1,8 +1,9 @@
 import React from 'react';
 import { screen, act, fireEvent } from '@testing-library/react';
-import { setupMocks, wrappedRender } from '@test/utils';
+import { setupIrmaMocks, setupMocks, wrappedRender } from '@test/utils';
 import Demo2 from '@components/Demo2/Demo2';
 import createIrmaSession from '@services/createIrmaSession';
+import reduceIRMAResult from '@services/reduceIRMAResult';
 import getGGW from '@services/getGGW';
 
 // Setup all the generic mocks
@@ -10,6 +11,7 @@ setupMocks();
 
 // MockcreateIrmaSession
 jest.mock('@services/createIrmaSession');
+jest.mock('@services/reduceIRMAResult');
 jest.mock('@services/getGGW');
 
 describe('Demo2', () => {
@@ -22,17 +24,10 @@ describe('Demo2', () => {
 
     it('should update the page after completing the IRMA flow for proving 18+ and living in Amsterdam', async () => {
         // Adjust mocked CreateIrmaSession to return a correct credential
-        const mockedCreateIrmaSession = createIrmaSession as jest.Mock<unknown>;
-        mockedCreateIrmaSession.mockReturnValue(
-            new Promise(resolve =>
-                setTimeout(() =>
-                    resolve({
-                        over18: 'Yes',
-                        zipcode: '1011PT'
-                    })
-                )
-            )
-        );
+        setupIrmaMocks(reduceIRMAResult, createIrmaSession, {
+            over18: 'Yes',
+            zipcode: '1011PT'
+        });
 
         jest.useFakeTimers();
 
@@ -70,17 +65,10 @@ describe('Demo2', () => {
 
     it('should update the page after completing the IRMA flow for proving 18+ and not living in Amsterdam', async () => {
         // Adjust mocked CreateIrmaSession to return a correct credential
-        const mockedCreateIrmaSession = createIrmaSession as jest.Mock<unknown>;
-        mockedCreateIrmaSession.mockReturnValue(
-            new Promise(resolve =>
-                setTimeout(() =>
-                    resolve({
-                        over18: 'Yes',
-                        zipcode: '3011AA'
-                    })
-                )
-            )
-        );
+        setupIrmaMocks(reduceIRMAResult, createIrmaSession, {
+            over18: 'Yes',
+            zipcode: '3011AA'
+        });
 
         jest.useFakeTimers();
 
@@ -114,17 +102,10 @@ describe('Demo2', () => {
 
     it('should update the page after completing the IRMA flow for not proving 18+ and living in Amsterdam', async () => {
         // Adjust mocked CreateIrmaSession to return a correct credential
-        const mockedCreateIrmaSession = createIrmaSession as jest.Mock<unknown>;
-        mockedCreateIrmaSession.mockReturnValue(
-            new Promise(resolve =>
-                setTimeout(() =>
-                    resolve({
-                        over18: 'No',
-                        zipcode: '1011PT'
-                    })
-                )
-            )
-        );
+        setupIrmaMocks(reduceIRMAResult, createIrmaSession, {
+            over18: 'No',
+            zipcode: '1011PT'
+        });
 
         jest.useFakeTimers();
 
@@ -162,17 +143,10 @@ describe('Demo2', () => {
 
     it('should update the page after completing the IRMA flow for not proving 18+ and not living in Amsterdam', async () => {
         // Adjust mocked CreateIrmaSession to return a correct credential
-        const mockedCreateIrmaSession = createIrmaSession as jest.Mock<unknown>;
-        mockedCreateIrmaSession.mockReturnValue(
-            new Promise(resolve =>
-                setTimeout(() =>
-                    resolve({
-                        over18: 'No',
-                        zipcode: '3011AA'
-                    })
-                )
-            )
-        );
+        setupIrmaMocks(reduceIRMAResult, createIrmaSession, {
+            over18: 'No',
+            zipcode: '3011AA'
+        });
 
         jest.useFakeTimers();
 
@@ -206,8 +180,7 @@ describe('Demo2', () => {
 
     it('should update the page after failing the IRMA flow', async () => {
         // Adjust mocked CreateIrmaSession to return a negative response
-        const mockedCreateIrmaSession = createIrmaSession as jest.Mock<unknown>;
-        mockedCreateIrmaSession.mockReturnValue(null);
+        setupIrmaMocks(reduceIRMAResult, createIrmaSession, null);
 
         // Render demo 2
         await act(async (): Promise<any> => await wrappedRender(<Demo2 />));
@@ -215,6 +188,8 @@ describe('Demo2', () => {
         // Trigger IRMA flow
         const QRCodeButton = screen.getByTestId('qrCodeButton');
         await act(async (): Promise<any> => await fireEvent.click(QRCodeButton));
+
+        await screen.findByTestId('hasErrorAlert');
 
         // Check if demo notification is not visible
         const demoNotification = screen.queryByTestId('demoNotification');

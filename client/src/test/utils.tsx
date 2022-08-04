@@ -192,3 +192,23 @@ const setupMockedAPI = (mockedAxios: MockAdapter): void => {
             }
         });
 };
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const setupIrmaMocks = (reduceIRMAResult: any, createIrmaSession: any, input: any) => {
+    const mockedReduceIRMAResult = reduceIRMAResult as jest.Mock<{ over18: string }>;
+    mockedReduceIRMAResult.mockReturnValue(input);
+
+    const mockedCreateIrmaSession = createIrmaSession as jest.Mock<unknown>;
+    mockedCreateIrmaSession.mockReturnValue({
+        start: () =>
+            new Promise(resolve =>
+                setTimeout(
+                    () =>
+                        resolve({
+                            disclosed: input
+                        }),
+                    90
+                )
+            )
+    });
+};

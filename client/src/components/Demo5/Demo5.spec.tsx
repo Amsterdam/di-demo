@@ -1,14 +1,16 @@
 import React from 'react';
 import { screen, act, fireEvent } from '@testing-library/react';
-import { setupMocks, wrappedRender } from '@test/utils';
+import { setupIrmaMocks, setupMocks, wrappedRender } from '@test/utils';
 import Demo5 from '@components/Demo5/Demo5';
 import createIrmaSession from '@services/createIrmaSession';
+import reduceIRMAResult from '@services/reduceIRMAResult';
 
 // Setup all the generic mocks
 setupMocks();
 
 // MockcreateIrmaSession
 jest.mock('@services/createIrmaSession');
+jest.mock('@services/reduceIRMAResult');
 
 describe('Demo5', () => {
     it('should render the initial header image', async () => {
@@ -31,17 +33,10 @@ describe('Demo5', () => {
 
     it('should update the page after completing the IRMA flow', async () => {
         // Adjust mocked CreateIrmaSession to return a correct credentials
-        const mockedCreateIrmaSession = createIrmaSession as jest.Mock<unknown>;
-        mockedCreateIrmaSession.mockReturnValue(
-            new Promise(resolve =>
-                setTimeout(() =>
-                    resolve({
-                        email: 'test@amsterdam.nl',
-                        mobilenumber: '0612345678'
-                    })
-                )
-            )
-        );
+        setupIrmaMocks(reduceIRMAResult, createIrmaSession, {
+            email: 'test@amsterdam.nl',
+            mobilenumber: '0612345678'
+        });
 
         jest.useFakeTimers();
 
@@ -130,8 +125,7 @@ describe('Demo5', () => {
 
     it('should update the page after failing the IRMA flow', async () => {
         // Adjust mocked CreateIrmaSession to return a correct credentials
-        const mockedCreateIrmaSession = createIrmaSession as jest.Mock<unknown>;
-        mockedCreateIrmaSession.mockReturnValue(null);
+        setupIrmaMocks(reduceIRMAResult, createIrmaSession, null);
 
         // Render demo 5
         await act(async (): Promise<any> => await wrappedRender(<Demo5 />));
@@ -158,6 +152,8 @@ describe('Demo5', () => {
         // Trigger IRMA flow
         const QRCodeButton = screen.getByTestId('qrCodeButton');
         await act(async (): Promise<any> => await fireEvent.click(QRCodeButton));
+
+        await screen.findByRole('alert');
 
         // Check if header image is updated
         const headerImage = screen.getByTestId('headerImage');

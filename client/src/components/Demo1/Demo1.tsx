@@ -35,13 +35,15 @@ const Demo1: React.FC<IProps> = () => {
     const {
         modal: modalOver18,
         url: urlOver18,
-        showModal: showModalOver18
+        showModal: showModalOver18,
+        irmaSession: sessionOver18
     }: IIrmaSessionOutputData = useIrmaSession({
         irmaQrId: 'irma-qr-18',
         demoPath: 'demos/demo1/18',
         useDemoCredentials: credentialSource === CredentialSource.DEMO,
         alwaysShowQRCode: false,
         resultCallback: (result: any) => {
+            console.log('resultOver18', result);
             if (result && result?.over18 !== undefined) {
                 setIsOver18(
                     result['over18'] === 'Yes' ||
@@ -63,13 +65,15 @@ const Demo1: React.FC<IProps> = () => {
     const {
         modal: modalOver65,
         url: urlOver65,
-        showModal: showModalOver65
+        showModal: showModalOver65,
+        irmaSession: sessionOver65
     } = useIrmaSession({
         irmaQrId: 'irma-qr-65',
         demoPath: 'demos/demo1/65',
         useDemoCredentials: credentialSource === CredentialSource.DEMO,
         alwaysShowQRCode: false,
         resultCallback: (result: any) => {
+            console.log(result);
             if (result && result?.over65 !== undefined) {
                 setIsOver65(
                     (result as any)['over65'] === 'Yes' ||
@@ -87,6 +91,20 @@ const Demo1: React.FC<IProps> = () => {
             startUsabillaSurvey();
         }
     });
+
+    useEffect(() => {
+        return () => {
+            if (typeof sessionOver18?.abort === 'function') {
+                console.log('abort session 18');
+                sessionOver18.abort();
+            }
+
+            if (typeof sessionOver65?.abort === 'function') {
+                console.log('abort session 65');
+                sessionOver65.abort();
+            }
+        };
+    }, [sessionOver18, sessionOver65]);
 
     // Preload demo images
     useEffect(() => {

@@ -1,6 +1,7 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import IrmaSessionModal from '@components/IrmaSessionModal/IrmaSessionModal';
 import createIrmaSession, { isMobile } from '@services/createIrmaSession';
+import reduceIRMAResult from '@services/reduceIRMAResult';
 import { useCurrentLanguage } from '@services/ContentProvider';
 
 interface IIrmaSessionInputData {
@@ -17,6 +18,7 @@ export interface IIrmaSessionOutputData {
     url: string | undefined;
     showModal: () => void;
     startIrmaSession: (activeIrmaSessionDataInput?: IIrmaSessionInputData) => void;
+    irmaSession: any;
 }
 
 const useIrmaSession = (activeIrmaSessionDataInput?: IIrmaSessionInputData): IIrmaSessionOutputData => {
@@ -27,6 +29,7 @@ const useIrmaSession = (activeIrmaSessionDataInput?: IIrmaSessionInputData): IIr
     );
     const [url, setUrl] = useState<string>();
     const [deferStart, setDeferStart] = useState<boolean>(activeIrmaSessionDataInput === undefined);
+    const session = useRef<any>(null);
     const language = useCurrentLanguage();
 
     // Define callback to manually close modal
@@ -66,19 +69,29 @@ const useIrmaSession = (activeIrmaSessionDataInput?: IIrmaSessionInputData): IIr
         };
 
         // Run the actual IRMA session and fetch the result
-        const startIrmaSession = async (): Promise<any> => {
+        const startIrmaSession = async (): Promise<void> => {
             console.log('startIrmaSession', activeIrmaSessionData);
-            const result: any = await createIrmaSession(
-                activeIrmaSessionData.demoPath,
-                activeIrmaSessionData?.irmaQrId || 'irma-qr',
-                { demo: activeIrmaSessionData.useDemoCredentials, ...activeIrmaSessionData.extraQuery },
-                callBackMapping,
-                activeIrmaSessionData.alwaysShowQRCode,
-                language
-            );
+            if (session.current === null) {
+                session.current = createIrmaSession(
+                    activeIrmaSessionData.demoPath,
+                    activeIrmaSessionData?.irmaQrId || 'irma-qr',
+                    { demo: activeIrmaSessionData.useDemoCredentials, ...activeIrmaSessionData.extraQuery },
+                    callBackMapping,
+                    activeIrmaSessionData.alwaysShowQRCode,
+                    language
+                );
+            }
 
-            activeIrmaSessionData.resultCallback(result);
-            closeModal();
+            try {
+                const result = await session.current.start();
+                console.log('result.disclosed ', result, result.disclosed);
+                const reducedResult = reduceIRMAResult(result.disclosed);
+                console.log('reducedResult', reducedResult);
+                activeIrmaSessionData.resultCallback(reducedResult);
+                closeModal();
+            } catch (e) {
+                return;
+            }
         };
         if (!deferStart) {
             startIrmaSession();
@@ -112,7 +125,8 @@ const useIrmaSession = (activeIrmaSessionDataInput?: IIrmaSessionInputData): IIr
             }
 
             setDeferStart(false);
-        }
+        },
+        irmaSession: session.current
     };
     return irmaSessionOutputData;
 };
