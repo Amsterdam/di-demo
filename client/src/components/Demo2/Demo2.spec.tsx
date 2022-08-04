@@ -23,10 +23,18 @@ describe('Demo2', () => {
     it('should update the page after completing the IRMA flow for proving 18+ and living in Amsterdam', async () => {
         // Adjust mocked CreateIrmaSession to return a correct credential
         const mockedCreateIrmaSession = createIrmaSession as jest.Mock<unknown>;
-        mockedCreateIrmaSession.mockReturnValue({
-            over18: 'Yes',
-            zipcode: '1011PT'
-        });
+        mockedCreateIrmaSession.mockReturnValue(
+            new Promise(resolve =>
+                setTimeout(() =>
+                    resolve({
+                        over18: 'Yes',
+                        zipcode: '1011PT'
+                    })
+                )
+            )
+        );
+
+        jest.useFakeTimers();
 
         // Adjust mocked getGGW to return a proper response in Amsterdam
         const mockedGetGGW = getGGW as jest.Mock<unknown>;
@@ -42,6 +50,10 @@ describe('Demo2', () => {
         // Trigger IRMA flow
         const QRCodeButton = screen.getByTestId('qrCodeButton');
         await act(async (): Promise<any> => await fireEvent.click(QRCodeButton));
+
+        jest.advanceTimersByTime(110);
+
+        await screen.findAllByRole('alert');
 
         // Check if header image is updated
         const headerImage = screen.getByTestId('headerImage');
@@ -59,10 +71,18 @@ describe('Demo2', () => {
     it('should update the page after completing the IRMA flow for proving 18+ and not living in Amsterdam', async () => {
         // Adjust mocked CreateIrmaSession to return a correct credential
         const mockedCreateIrmaSession = createIrmaSession as jest.Mock<unknown>;
-        mockedCreateIrmaSession.mockReturnValue({
-            over18: 'Yes',
-            zipcode: '3011AA'
-        });
+        mockedCreateIrmaSession.mockReturnValue(
+            new Promise(resolve =>
+                setTimeout(() =>
+                    resolve({
+                        over18: 'Yes',
+                        zipcode: '3011AA'
+                    })
+                )
+            )
+        );
+
+        jest.useFakeTimers();
 
         // Adjust mocked getGGW to return a proper response outside Amsterdam
         const mockedGetGGW = getGGW as jest.Mock<unknown>;
@@ -74,6 +94,10 @@ describe('Demo2', () => {
         // Trigger IRMA flow
         const QRCodeButton = screen.getByTestId('qrCodeButton');
         await act(async (): Promise<any> => await fireEvent.click(QRCodeButton));
+
+        jest.advanceTimersByTime(110);
+
+        await screen.findAllByRole('alert');
 
         // Check if header image is updated
         const headerImage = screen.getByTestId('headerImage');
@@ -91,10 +115,18 @@ describe('Demo2', () => {
     it('should update the page after completing the IRMA flow for not proving 18+ and living in Amsterdam', async () => {
         // Adjust mocked CreateIrmaSession to return a correct credential
         const mockedCreateIrmaSession = createIrmaSession as jest.Mock<unknown>;
-        mockedCreateIrmaSession.mockReturnValue({
-            over18: 'No',
-            zipcode: '1011PT'
-        });
+        mockedCreateIrmaSession.mockReturnValue(
+            new Promise(resolve =>
+                setTimeout(() =>
+                    resolve({
+                        over18: 'No',
+                        zipcode: '1011PT'
+                    })
+                )
+            )
+        );
+
+        jest.useFakeTimers();
 
         // Adjust mocked getGGW to return a proper response in Amsterdam
         const mockedGetGGW = getGGW as jest.Mock<unknown>;
@@ -110,6 +142,10 @@ describe('Demo2', () => {
         // Trigger IRMA flow
         const QRCodeButton = screen.getByTestId('qrCodeButton');
         await act(async (): Promise<any> => await fireEvent.click(QRCodeButton));
+
+        jest.advanceTimersByTime(110);
+
+        await screen.findAllByRole('alert');
 
         // Check if header image is updated
         const headerImage = screen.getByTestId('headerImage');
@@ -127,10 +163,18 @@ describe('Demo2', () => {
     it('should update the page after completing the IRMA flow for not proving 18+ and not living in Amsterdam', async () => {
         // Adjust mocked CreateIrmaSession to return a correct credential
         const mockedCreateIrmaSession = createIrmaSession as jest.Mock<unknown>;
-        mockedCreateIrmaSession.mockReturnValue({
-            over18: 'No',
-            zipcode: '3011AA'
-        });
+        mockedCreateIrmaSession.mockReturnValue(
+            new Promise(resolve =>
+                setTimeout(() =>
+                    resolve({
+                        over18: 'No',
+                        zipcode: '3011AA'
+                    })
+                )
+            )
+        );
+
+        jest.useFakeTimers();
 
         // Adjust mocked getGGW to return a proper response in Amsterdam
         const mockedGetGGW = getGGW as jest.Mock<unknown>;
@@ -142,6 +186,10 @@ describe('Demo2', () => {
         // Trigger IRMA flow
         const QRCodeButton = screen.getByTestId('qrCodeButton');
         await act(async (): Promise<any> => await fireEvent.click(QRCodeButton));
+
+        jest.advanceTimersByTime(110);
+
+        await screen.findAllByRole('alert');
 
         // Check if header image is updated
         const headerImage = screen.getByTestId('headerImage');
