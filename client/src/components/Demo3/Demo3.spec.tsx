@@ -21,9 +21,17 @@ describe('Demo3', () => {
     it('should update the page after completing the IRMA flow', async () => {
         // Adjust mocked CreateIrmaSession to return a correct credential
         const mockedCreateIrmaSession = createIrmaSession as jest.Mock<unknown>;
-        mockedCreateIrmaSession.mockReturnValue({
-            fullname: 'Test test'
-        });
+        mockedCreateIrmaSession.mockReturnValue(
+            new Promise(resolve =>
+                setTimeout(() =>
+                    resolve({
+                        fullname: 'Test test'
+                    })
+                )
+            )
+        );
+
+        jest.useFakeTimers();
 
         // Render demo 3
         await act(async (): Promise<any> => await wrappedRender(<Demo3 />));
@@ -31,6 +39,10 @@ describe('Demo3', () => {
         // Trigger IRMA flow
         const QRCodeButton = screen.getByTestId('qrCodeButton');
         await act(async (): Promise<any> => await fireEvent.click(QRCodeButton));
+
+        jest.advanceTimersByTime(110);
+
+        await screen.findByRole('alert');
 
         // Check if header image is updated
         const headerImage = screen.getByTestId('headerImage');

@@ -3947,7 +3947,7 @@ exports[`Demo2 should update the page after failing the IRMA flow 1`] = `
   aria-live="polite"
   class="c0 c1"
   data-testid="hasErrorAlert"
-  id="alert-sc-geBCVM c1"
+  id="alert-sc-clGGWX c1"
   role="alert"
   tabindex="-1"
 >

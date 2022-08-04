@@ -255,7 +255,6 @@ const Demo4: React.FC<IProps> = () => {
                                     <AscLocal.QRCodeLink
                                         onClick={(e: React.SyntheticEvent) => {
                                             if (!validateForm()) {
-                                                console.log(e);
                                                 e.preventDefault();
                                                 e.stopPropagation();
                                             }

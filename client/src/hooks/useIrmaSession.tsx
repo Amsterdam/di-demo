@@ -83,7 +83,7 @@ const useIrmaSession = (activeIrmaSessionDataInput?: IIrmaSessionInputData): IIr
         if (!deferStart) {
             startIrmaSession();
         }
-    }, [activeIrmaSessionData, closeModal, language]);
+    }, [deferStart, activeIrmaSessionData, closeModal, language]);
 
     const modalElement = isMobile() ? (
         <div id={activeIrmaSessionDataInput?.irmaQrId} style={{ display: 'none' }}></div>

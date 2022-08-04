@@ -21,9 +21,17 @@ describe('Demo1', () => {
     it('should update the page after completing the IRMA flow for proving 18+', async () => {
         // Adjust mocked CreateIrmaSession to return a correct credential
         const mockedCreateIrmaSession = createIrmaSession as jest.Mock<unknown>;
-        mockedCreateIrmaSession.mockReturnValue({
-            over18: 'Yes'
-        });
+        mockedCreateIrmaSession.mockReturnValue(
+            new Promise(resolve =>
+                setTimeout(() =>
+                    resolve({
+                        over18: 'Yes'
+                    })
+                )
+            )
+        );
+
+        jest.useFakeTimers();
 
         // Render demo 3
         await act(async (): Promise<any> => await wrappedRender(<Demo1 />));
@@ -31,6 +39,10 @@ describe('Demo1', () => {
         // Trigger IRMA flow
         const QRCodeButton = screen.getByTestId('qrCodeButton18');
         await act(async (): Promise<any> => await fireEvent.click(QRCodeButton));
+
+        jest.advanceTimersByTime(110);
+
+        await screen.findAllByRole('alert');
 
         // Check if header image is updated
         const headerImage = screen.getByTestId('headerImage');
@@ -48,9 +60,17 @@ describe('Demo1', () => {
     it('should update the page after completing the IRMA flow for not proving 18+', async () => {
         // Adjust mocked CreateIrmaSession to return a correct credential
         const mockedCreateIrmaSession = createIrmaSession as jest.Mock<unknown>;
-        mockedCreateIrmaSession.mockReturnValue({
-            over18: 'No'
-        });
+        mockedCreateIrmaSession.mockReturnValue(
+            new Promise(resolve =>
+                setTimeout(() =>
+                    resolve({
+                        over18: 'No'
+                    })
+                )
+            )
+        );
+
+        jest.useFakeTimers();
 
         // Render demo 3
         await act(async (): Promise<any> => await wrappedRender(<Demo1 />));
@@ -58,6 +78,10 @@ describe('Demo1', () => {
         // Trigger IRMA flow
         const QRCodeButton = screen.getByTestId('qrCodeButton18');
         await act(async (): Promise<any> => await fireEvent.click(QRCodeButton));
+
+        jest.advanceTimersByTime(110);
+
+        await screen.findAllByRole('alert');
 
         // Check if header image is updated
         const headerImage = screen.getByTestId('headerImage');
@@ -75,15 +99,27 @@ describe('Demo1', () => {
     it('should update the page after completing the IRMA flow for proving 65+', async () => {
         // Adjust mocked CreateIrmaSession to return a correct credential
         const mockedCreateIrmaSession = createIrmaSession as jest.Mock<unknown>;
-        mockedCreateIrmaSession.mockReturnValue({
-            over65: 'Yes'
-        });
+        mockedCreateIrmaSession.mockReturnValue(
+            new Promise(resolve =>
+                setTimeout(() =>
+                    resolve({
+                        over65: 'Yes'
+                    })
+                )
+            )
+        );
+
+        jest.useFakeTimers();
 
         await act(async (): Promise<any> => await wrappedRender(<Demo1 />));
 
         // Trigger IRMA flow
         const QRCodeButton = screen.getByTestId('qrCodeButton65');
         await act(async (): Promise<any> => await fireEvent.click(QRCodeButton));
+
+        jest.advanceTimersByTime(110);
+
+        await screen.findAllByRole('alert');
 
         // Check if header image is updated
         const headerImage = screen.getByTestId('headerImage');
@@ -101,15 +137,27 @@ describe('Demo1', () => {
     it('should update the page after completing the IRMA flow for not proving 65+', async () => {
         // Adjust mocked CreateIrmaSession to return a correct credential
         const mockedCreateIrmaSession = createIrmaSession as jest.Mock<unknown>;
-        mockedCreateIrmaSession.mockReturnValue({
-            over65: 'No'
-        });
+        mockedCreateIrmaSession.mockReturnValue(
+            new Promise(resolve =>
+                setTimeout(() =>
+                    resolve({
+                        over65: 'No'
+                    })
+                )
+            )
+        );
+
+        jest.useFakeTimers();
 
         await act(async (): Promise<any> => await wrappedRender(<Demo1 />));
 
         // Trigger IRMA flow
         const QRCodeButton = screen.getByTestId('qrCodeButton65');
         await act(async (): Promise<any> => await fireEvent.click(QRCodeButton));
+
+        jest.advanceTimersByTime(110);
+
+        await screen.findAllByRole('alert');
 
         // Check if header image is updated
         const headerImage = screen.getByTestId('headerImage');
@@ -127,7 +175,9 @@ describe('Demo1', () => {
     it('should update the page after failing the IRMA flow', async () => {
         // Adjust mocked CreateIrmaSession to return a negative response
         const mockedCreateIrmaSession = createIrmaSession as jest.Mock<unknown>;
-        mockedCreateIrmaSession.mockReturnValue(null);
+        mockedCreateIrmaSession.mockReturnValue(new Promise(resolve => setTimeout(() => resolve(null))));
+
+        jest.useFakeTimers();
 
         // Render demo 1
         await act(async (): Promise<any> => await wrappedRender(<Demo1 />));
@@ -135,6 +185,10 @@ describe('Demo1', () => {
         // Trigger IRMA flow
         const QRCodeButton = screen.getByTestId('qrCodeButton18');
         await act(async (): Promise<any> => await fireEvent.click(QRCodeButton));
+
+        jest.advanceTimersByTime(110);
+
+        await screen.findAllByRole('alert');
 
         // Check if demo notification is not visible
         const demoNotification = screen.queryByTestId('demoNotification');
