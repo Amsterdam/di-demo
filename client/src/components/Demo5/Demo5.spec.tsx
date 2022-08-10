@@ -153,7 +153,7 @@ describe('Demo5', () => {
         const QRCodeButton = screen.getByTestId('qrCodeButton');
         await act(async (): Promise<any> => await fireEvent.click(QRCodeButton));
 
-        await screen.findAllByRole('alert');
+        await screen.findByRole('alert');
 
         // Check if header image is updated
         const headerImage = screen.getByTestId('headerImage');
