@@ -99,21 +99,18 @@ const useIrmaSession = (activeIrmaSessionDataInput?: IIrmaSessionInputData): IIr
         }
     }, [deferStart, activeIrmaSessionData, closeModal, language]);
 
-    const modalElement =
-        isMobile() && activeIrmaSessionDataInput !== undefined ? (
-            <div id={activeIrmaSessionData?.irmaQrId} style={{ display: 'none' }}></div>
-        ) : (
-            <div style={{ display: showModal ? 'block' : 'none' }}>
-                <IrmaSessionModal
-                    showModal={true}
-                    QRIsShowing={QRIsShowing}
-                    closeModal={closeModal}
-                    irmaQrId={activeIrmaSessionData?.irmaQrId || 'irma-qr'}
-                    // Make the modal invisible for mobile flow unless alwaysShowQRCode is explicitly set
-                    hideForMobileFlow={!showModal}
-                />
-            </div>
-        );
+    const modalElement = (
+        <div style={{ display: showModal ? 'block' : 'none' }}>
+            <IrmaSessionModal
+                showModal={true}
+                QRIsShowing={QRIsShowing}
+                closeModal={closeModal}
+                irmaQrId={activeIrmaSessionData?.irmaQrId || 'irma-qr'}
+                // Make the modal invisible for mobile flow unless alwaysShowQRCode is explicitly set
+                hideForMobileFlow={!showModal}
+            />
+        </div>
+    );
 
     const irmaSessionOutputData: IIrmaSessionOutputData = {
         modal: modalElement,
