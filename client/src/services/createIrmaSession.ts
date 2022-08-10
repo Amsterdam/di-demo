@@ -119,6 +119,7 @@ const createIrmaSession = (
                     // If the response after starting an irma session contains a session cookie, we'll store it in sessionStorage too.
                     // This is because of a bug with Set-Cookie header in older iOS versions.
                     const { sessionId, sessionPtr } = await response.json();
+
                     sessionStorage.setItem(`irma-demo.sid.${holderElementId}`, sessionId);
                     sessionStorage.setItem(`irma-demo.sptr.${dataType}`, JSON.stringify(sessionPtr));
                     return sessionPtr;

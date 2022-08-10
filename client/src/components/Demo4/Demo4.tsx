@@ -63,7 +63,7 @@ const Demo4: React.FC<IProps> = () => {
         return false;
     };
 
-    const { modal, url, showModal }: IIrmaSessionOutputData = useIrmaSession({
+    const { modal, url, showModal, irmaSession }: IIrmaSessionOutputData = useIrmaSession({
         irmaQrId: 'irma-qr-geveltuin',
         demoPath: 'demos/demo4',
         useDemoCredentials: credentialSource === CredentialSource.DEMO,
@@ -92,6 +92,14 @@ const Demo4: React.FC<IProps> = () => {
             startUsabillaSurvey();
         }
     });
+
+    useEffect(() => {
+        return () => {
+            if (typeof irmaSession?.abort === 'function') {
+                irmaSession.abort();
+            }
+        };
+    }, [irmaSession]);
 
     const [headerImg, setHeaderImg] = useState<IHeaderImageProps>({
         filename: content.responsiveImages.demo4.header.src,

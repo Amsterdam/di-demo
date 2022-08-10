@@ -53,7 +53,7 @@ const Demo2: React.FC<IProps> = () => {
     const [credentialSource, setCredentialSource] = useState(CredentialSource.PRODUCTION);
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    const { modal, url, showModal }: IIrmaSessionOutputData = useIrmaSession({
+    const { modal, url, showModal, irmaSession }: IIrmaSessionOutputData = useIrmaSession({
         irmaQrId: 'irma-qr-buurt',
         demoPath: 'demos/demo2',
         useDemoCredentials: credentialSource === CredentialSource.DEMO,
@@ -96,6 +96,14 @@ const Demo2: React.FC<IProps> = () => {
             startUsabillaSurvey();
         }
     });
+
+    useEffect(() => {
+        return () => {
+            if (typeof irmaSession?.abort === 'function') {
+                irmaSession.abort();
+            }
+        };
+    }, [irmaSession]);
 
     const { hasResult, hasError, emptyVars, isOver18, wijk, ggw, code } = state;
 

@@ -32,7 +32,7 @@ const Demo3: React.FC<IProps> = () => {
     const [name, setName] = useState<string>('');
     const content = useContent();
 
-    const { modal, url, showModal }: IIrmaSessionOutputData = useIrmaSession({
+    const { modal, url, showModal, irmaSession }: IIrmaSessionOutputData = useIrmaSession({
         irmaQrId: 'irma-qr-inloggen',
         demoPath: 'demos/demo3',
         useDemoCredentials: credentialSource === CredentialSource.DEMO,
@@ -54,6 +54,14 @@ const Demo3: React.FC<IProps> = () => {
             startUsabillaSurvey();
         }
     });
+
+    useEffect(() => {
+        return () => {
+            if (typeof irmaSession?.abort === 'function') {
+                irmaSession.abort();
+            }
+        };
+    }, [irmaSession]);
 
     // Define dynamic header image
     const [headerImg, setHeaderImg] = useState<IHeaderImageProps>({
