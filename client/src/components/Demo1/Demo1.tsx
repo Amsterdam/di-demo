@@ -43,7 +43,6 @@ const Demo1: React.FC<IProps> = () => {
         useDemoCredentials: credentialSource === CredentialSource.DEMO,
         alwaysShowQRCode: false,
         resultCallback: (result: any) => {
-            console.log('resultOver18', result);
             if (result && result?.over18 !== undefined) {
                 setIsOver18(
                     result['over18'] === 'Yes' ||
@@ -73,7 +72,6 @@ const Demo1: React.FC<IProps> = () => {
         useDemoCredentials: credentialSource === CredentialSource.DEMO,
         alwaysShowQRCode: false,
         resultCallback: (result: any) => {
-            console.log(result);
             if (result && result?.over65 !== undefined) {
                 setIsOver65(
                     (result as any)['over65'] === 'Yes' ||
