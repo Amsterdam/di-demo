@@ -4,7 +4,7 @@
     "description": "IRMA Demo node server",
     "main": "src/app.ts",
     "scripts": {
-        "start": "set FE_URL=http://localhost:9000 && nodemon -e ts,js --exec ts-node -r tsconfig-paths/register ./src/app.ts",
+        "start": "nodemon -e ts,js --exec ts-node -r tsconfig-paths/register ./src/app.ts",
         "build": "tsc --build --pretty && tscpaths -p tsconfig.json -s ./src -o ./dist",
         "format": "prettier --write 'src/**/*.{ts,js}'",
         "lint": "eslint --fix",

@@ -1,5 +1,3 @@
-import { readFileSync } from 'fs';
-import path from 'path';
 import dotenv from 'dotenv';
 import configDev from './config.dev';
 import configAcc from './config.acc';
@@ -9,7 +7,6 @@ import configProd from './config.prod';
 dotenv.config();
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-process.env.PRIVATE_KEY = readFileSync(path.resolve(__dirname, '../../../../c.pem')).toString();
 
 // Check for PRIVATE KEY to access IRMA server
 if (!process.env.PRIVATE_KEY) {
