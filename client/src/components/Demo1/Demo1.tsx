@@ -41,7 +41,7 @@ const Demo1: React.FC<IProps> = () => {
         irmaQrId: 'irma-qr-18',
         demoPath: 'demos/demo1/18',
         useDemoCredentials: credentialSource === CredentialSource.DEMO,
-        alwaysShowQRCode: false,
+        alwaysShowQRCode: isMobile(),
         resultCallback: (result: any) => {
             if (result && result?.over18 !== undefined) {
                 setIsOver18(
@@ -70,7 +70,7 @@ const Demo1: React.FC<IProps> = () => {
         irmaQrId: 'irma-qr-65',
         demoPath: 'demos/demo1/65',
         useDemoCredentials: credentialSource === CredentialSource.DEMO,
-        alwaysShowQRCode: false,
+        alwaysShowQRCode: isMobile(),
         resultCallback: (result: any) => {
             if (result && result?.over65 !== undefined) {
                 setIsOver65(

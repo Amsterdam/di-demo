@@ -36,7 +36,7 @@ const Demo3: React.FC<IProps> = () => {
         irmaQrId: 'irma-qr-inloggen',
         demoPath: 'demos/demo3',
         useDemoCredentials: credentialSource === CredentialSource.DEMO,
-        alwaysShowQRCode: false,
+        alwaysShowQRCode: isMobile(),
         resultCallback: async (result: any) => {
             if (result) {
                 setHasResult(true);

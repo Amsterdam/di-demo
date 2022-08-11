@@ -48,10 +48,10 @@ const useIrmaSession = (activeIrmaSessionDataInput?: IIrmaSessionInputData): IIr
         // Define the callback mapping that triggers functions on IRMA state changes
         const callBackMapping = {
             ShowingQRCode: (payload: { mobile: string }) => {
+                setQRIsShowing(true);
+
                 if (isMobile() && activeIrmaSessionData?.alwaysShowQRCode !== true) {
                     setUrl(payload?.mobile ?? '');
-                } else {
-                    setQRIsShowing(true);
                 }
             },
             ShowingQRCodeInstead: () => {

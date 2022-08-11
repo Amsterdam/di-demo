@@ -57,7 +57,7 @@ const Demo2: React.FC<IProps> = () => {
         irmaQrId: 'irma-qr-buurt',
         demoPath: 'demos/demo2',
         useDemoCredentials: credentialSource === CredentialSource.DEMO,
-        alwaysShowQRCode: false,
+        alwaysShowQRCode: isMobile(),
         resultCallback: async (result: any) => {
             const newState: IState = { ...initialState };
             if (result) {

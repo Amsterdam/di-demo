@@ -67,7 +67,7 @@ const Demo4: React.FC<IProps> = () => {
         irmaQrId: 'irma-qr-geveltuin',
         demoPath: 'demos/demo4',
         useDemoCredentials: credentialSource === CredentialSource.DEMO,
-        alwaysShowQRCode: false,
+        alwaysShowQRCode: isMobile(),
         resultCallback: async (result: any) => {
             if (result) {
                 dispatch({
